@@ -1,0 +1,48 @@
+<nav class="navbar navbar-inverse bg-primary navbar-toggleable-md">
+  <div class="container">
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand" href="#">
+    <img src="favicon.ico" width="30" height="30" alt="">
+    Angular 2 {{title}}
+  </a>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#">Disabled</a>
+      </li>
+    </ul>
+  </div>
+  </div>
+</nav>
+
+<div class="container">
+  <h1 class="display-4">My Angular/Bootstrap App</h1>
+  <p class="lead">
+    This application showcases an application architecture with Angular 2 and Kendo UI for Angular 2.
+  </p>
+  <button kendoButton (click)="onButtonClick()" [primary]="true">My Kendo UI Button</button>
+  <button kendoButton (click)="onButton2Click()">Default Button</button>
+
+  <kendo-grid [data]="gridData" [height]="gridHeight">
+        <kendo-grid-column field="id" title="ID" width="40"></kendo-grid-column>
+        <kendo-grid-column field="ProductName" title="Name" width="250"></kendo-grid-column>
+        <kendo-grid-column field="Category.CategoryName" title="Category"></kendo-grid-column>
+        <kendo-grid-column field="UnitPrice" title="Price" width="80"></kendo-grid-column>
+        <kendo-grid-column field="UnitsInStock" title="In stock" width="80"></kendo-grid-column>
+        <kendo-grid-column field="Discontinued" title="Discontinued" width="120">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <input type="checkbox" [checked]="dataItem.Discontinued" disabled/>
+            </ng-template>
+        </kendo-grid-column>
+    </kendo-grid>
+
+</div>
