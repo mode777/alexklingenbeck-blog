@@ -43,10 +43,10 @@ module.exports = {
     ]
   },
   "output": {
-    "path": path.join(process.cwd(), "wwwroot"),
+    "path": path.join(process.cwd(), "wwwroot/dist"),
     "filename": "[name].bundle.js",
     "chunkFilename": "[id].chunk.js",
-    "publicPath": "/",
+    "publicPath": "/dist/",
   },
   "module": {
     "rules": [
@@ -202,7 +202,7 @@ module.exports = {
     new ProgressPlugin(),
     new HtmlWebpackPlugin({
       "template": "./Views/Shared/_WebpackTemplate.cshtml",
-      "filename": "./../Views/Home/Index.cshtml",
+      "filename": "./../../Views/Home/Index.cshtml",
       "hash": false,
       "inject": true,
       "compile": true,
