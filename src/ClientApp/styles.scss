@@ -1,2 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap/scss/bootstrap";
+
+.jumbotron, .btn, .navbar-toggler {
+    border-radius: 0px !important;
+}
+
+.jumbotron {
+    color: white;
+}
