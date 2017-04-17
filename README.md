@@ -24,7 +24,7 @@ The aspnet-core features described here are implemented using the `Microsoft.Asp
 
 ### Support for push-api URLs
 
-Angular2 can use the push api for routing. This results in URLs that look like `www.example.com/users/1` instead of `www.example.com#/users/1` (mind the `#`). When reloading such an api the server will always serve the index.html of your angular application.
+Angular2 can use the push api for routing. This results in URLs that look like `www.example.com/users/1` instead of `www.example.com#/users/1` (mind the `#`). When reloading such an URL the server will always serve the index.html of your angular application.
 
 ### Integration of the webpack build with hot-module-replacement
 
