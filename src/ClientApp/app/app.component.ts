@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
 export class AppComponent {
     title = 'My Angular2 App';
     isNavbarCollapsed = true;
-  
+    licenseCollapsed = true;
 }

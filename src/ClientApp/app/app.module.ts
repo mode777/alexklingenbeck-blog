@@ -4,16 +4,38 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
+import { RouterModule, Routes } from '@angular/router';
+import { HomeViewComponent } from './home-view/home-view.component';
+import { FeaturesViewComponent } from './features-view/features-view.component';
+import { SupportViewComponent } from './support-view/support-view.component';
+import { NotFoundViewComponent } from './not-found-view/not-found-view.component';
+
+const appRoutes: Routes = [
+    { path: 'home', component: HomeViewComponent },
+    { path: 'features', component: FeaturesViewComponent },
+    { path: 'support', component: SupportViewComponent },
+    {
+        path: '',
+        redirectTo: '/home',
+        pathMatch: 'full'
+    },
+    { path: '**', component: NotFoundViewComponent }
+];
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeViewComponent,
+    FeaturesViewComponent,
+    SupportViewComponent,
+    NotFoundViewComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
       HttpModule,
-      NgbModule.forRoot()
+      NgbModule.forRoot(),
+      RouterModule.forRoot(appRoutes)
   ],
   providers: [],
   bootstrap: [AppComponent]
