@@ -18,6 +18,8 @@ src/node_modules
 *.sublime-workspace
 /.vs
 *.user
+.vscode
+src/.vscode
 
 # IDE - VSCode
 .vscode/*
