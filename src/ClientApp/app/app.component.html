@@ -4,7 +4,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <span class="navbar-brand" href="#">
-            <img src="dist/assets/angular.svg" width="30" height="30" alt="">
+            <svg width="30" height="30" class="octicon text-success" aria-hidden="true"><use xlink:href="dist/assets/sprite.octicons.svg#gist" /></svg>
             {{title}}
         </span>
         <div [ngbCollapse]="isNavbarCollapsed" class="collapse navbar-collapse" id="navbarNav">
@@ -13,10 +13,10 @@
                     <a routerLinkActive="active" class="nav-link" routerLink="/home">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a routerLinkActive="active" class="nav-link" routerLink="/features">Features</a>
+                    <a routerLinkActive="active" class="nav-link" routerLink="/blog">Blog</a>
                 </li>
                 <li class="nav-item">
-                    <a routerLinkActive="active" class="nav-link" routerLink="/support">Support</a>
+                    <a routerLinkActive="active" class="nav-link" routerLink="/support">About</a>
                 </li>
             </ul>
         </div>

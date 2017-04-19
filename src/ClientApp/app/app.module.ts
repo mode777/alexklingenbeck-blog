@@ -9,10 +9,11 @@ import { HomeViewComponent } from './home-view/home-view.component';
 import { FeaturesViewComponent } from './features-view/features-view.component';
 import { SupportViewComponent } from './support-view/support-view.component';
 import { NotFoundViewComponent } from './not-found-view/not-found-view.component';
+import { BlogViewComponent } from './blog-view/blog-view.component';
 
 const appRoutes: Routes = [
     { path: 'home', component: HomeViewComponent },
-    { path: 'features', component: FeaturesViewComponent },
+    { path: 'blog', component: BlogViewComponent },
     { path: 'support', component: SupportViewComponent },
     {
         path: '',
@@ -28,14 +29,15 @@ const appRoutes: Routes = [
     HomeViewComponent,
     FeaturesViewComponent,
     SupportViewComponent,
-    NotFoundViewComponent
+    NotFoundViewComponent,
+    BlogViewComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-      HttpModule,
-      NgbModule.forRoot(),
-      RouterModule.forRoot(appRoutes)
+    HttpModule,
+    NgbModule.forRoot(),
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [],
   bootstrap: [AppComponent]
