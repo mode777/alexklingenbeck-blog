@@ -48,3 +48,5 @@ Thumbs.db
 src/bin
 src/obj
 src/wwwroot/dist
+*.lock.json
+
