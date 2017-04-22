@@ -26,3 +26,13 @@ footer {
     padding: 4rem 0;
     margin-top: 4rem;
 }
+
+@import "~highlight.js/styles/agate.css";
+
+pre code {
+    display: block;
+    overflow-x: auto;
+    padding: 0.5em;
+    background: #333;
+    color: white;
+}

@@ -27,6 +27,8 @@
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.23",
     "bootstrap": "^4.0.0-alpha.6",
     "core-js": "^2.4.1",
+    "highlight.js": "^9.11.0",
+    "marked": "^0.3.6",
     "octicons": "^5.0.1",
     "rxjs": "^5.1.0",
     "zone.js": "^0.8.4"
@@ -35,6 +37,7 @@
     "@angular/cli": "1.0.0",
     "@angular/compiler-cli": "^4.0.0",
     "@types/jasmine": "2.5.38",
+    "@types/marked": "0.0.28",
     "@types/node": "~6.0.60",
     "aspnet-webpack": "^1.0.28",
     "autoprefixer": "^6.5.3",
