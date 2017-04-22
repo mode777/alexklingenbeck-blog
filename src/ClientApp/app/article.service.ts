@@ -20,6 +20,7 @@ export interface Article {
   author: string;
   date: Date;
   src: string;
+  id: string;
 }
 
 @Injectable()

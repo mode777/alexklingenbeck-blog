@@ -5,6 +5,7 @@
     "tags": [ ".net", "web", "angular" ],
     "src": "article1.md",
     "author": "Alexander Klingenbeck",
-    "date": "2017-04-21"
+    "date": "2017-04-21",
+    "id": "article-1"
   }
 ]

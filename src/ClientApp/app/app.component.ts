@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-    title = 'My Angular2 App';
+    title = 'alexklingenbeck.de';
     isNavbarCollapsed = true;
     licenseCollapsed = true;
 }
