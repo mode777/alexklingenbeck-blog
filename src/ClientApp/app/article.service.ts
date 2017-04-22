@@ -12,8 +12,15 @@ import * as hljs from 'highlight.js';
 const INDEX = 'index.json';
 const ARTICLE_ROOT = 'dist/assets/articles/';
 
-export interface Article {
-  title: string,
+const _catch = function(err: HttpResponse){
+    return RxObservable.throw(err);
+  }
+
+export class Article {
+  
+  private _html: string = null;
+  
+  title: string;
   lead: string;
   tags: string[];
   content: string;
@@ -21,12 +28,36 @@ export interface Article {
   date: Date;
   src: string;
   id: string;
+  html: RxObservable<string>;
+
+  constructor(private http: Http, json: any){
+    this.title = json.title;
+    this.lead = json.lead;
+    this.tags = json.tags;
+    this.author = json.author;
+    this.src = json.src;
+    this.id = json.id;
+    this.date = new Date(json.date);
+    console.log(this.src);
+
+    this.html = this.http
+    .get(ARTICLE_ROOT + this.src)
+    .map(this._renderContent)
+    .catch(_catch);
+  }
+
+
+  private _renderContent(res: HttpResponse){
+    console.log(res);
+    return marked(res.text());
+  }
+
 }
 
 @Injectable()
 export class ArticleService {
 
-  constructor(private http: Http) {
+  constructor(private _http: Http) {
     
     marked.setOptions({
       highlight: (code, lang) => {
@@ -42,34 +73,10 @@ export class ArticleService {
   }
 
   getArticles(): RxObservable<Article[]> {
-    return this.http
+    return this._http
     .get(ARTICLE_ROOT + INDEX)
-    .map(this._parseArticle)
-    .catch(this._catch);
-  }
-
-  loadContent(article: Article): RxObservable<Article> {
-    return this.http
-    .get(ARTICLE_ROOT + article.src)
-    .map(response => this._renderContent(response, article))
-    .catch(this._catch)
-  }
-
-  private _parseArticle(res: HttpResponse){
-    let content = <Article[]>res.json();
-    content.forEach(a => {
-      a.date = new Date(a.date);
-    });
-    return content;
-  }
-
-  private _renderContent(res: HttpResponse, article: Article){
-    article.content = marked(res.text());
-    return article;
-  }
-
-  private _catch(err: HttpResponse){
-    return RxObservable.throw(err);
+    .map(res => res.json().map(a => new Article(this._http, a)))
+    .catch(_catch);
   }
 
 }

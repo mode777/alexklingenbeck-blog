@@ -14,20 +14,12 @@ export class BlogViewComponent implements OnInit {
   content = "";
   shortname = "alexklingenbeck";
   article = this._artService.getArticles().map(x => x[0]);
-  //id: Observable<string> = this._artService.getArticles().map(x => x[0].id);
-
+  
   constructor(private _artService: ArticleService, private _route: ActivatedRoute, private _router: Router) {
 
    }
 
   ngOnInit() {
-    //this.id = this._artService.getArticles().map(x => x[0].id);
-    // this._artService.getArticles().subscribe(articles => {
-    //   this._artService.loadContent(articles[0]).subscribe(article => {
-    //     this.content = article.content;
-        
-    //   }, (e) => { throw(e) });
-    // });
   }
 
 }
