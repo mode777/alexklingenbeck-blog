@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpModule } from '@angular/http';
+import {DisqusModule} from "ng2-awesome-disqus";
 
 import { AppComponent } from './app.component';
 import { RouterModule, Routes } from '@angular/router';
@@ -39,7 +40,8 @@ const appRoutes: Routes = [
     FormsModule,
     HttpModule,
     NgbModule.forRoot(),
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    DisqusModule
   ],
   providers: [ ArticleService ],
   bootstrap: [AppComponent]

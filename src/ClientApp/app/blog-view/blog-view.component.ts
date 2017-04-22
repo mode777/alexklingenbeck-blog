@@ -9,6 +9,8 @@ import { ArticleService } from '../article.service';
 export class BlogViewComponent implements OnInit {
 
   content = "";
+  shortname = "alexklingenbeck";
+  id = "TEST_01";
 
   constructor(private _artService: ArticleService) { }
 
