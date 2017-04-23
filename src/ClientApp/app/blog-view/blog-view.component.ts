@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ArticleService } from '../article.service';
+import { ArticleService, Article } from '../article.service';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import { Observable } from "rxjs/Observable";
@@ -13,13 +13,17 @@ export class BlogViewComponent implements OnInit {
 
   content = "";
   shortname = "alexklingenbeck";
-  article = this._artService.getArticles().map(x => x[0]);
+  article: Observable<Article>;
   
   constructor(private _artService: ArticleService, private _route: ActivatedRoute, private _router: Router) {
-
+    this.article = this._route.params.flatMap(params => _artService.getById(params["id"]));    
    }
 
   ngOnInit() {
+    // this._route.params.subscribe(params => {
+    //   console.log(params)
+    //   this.article = this._artService.getById(this._route.params["id"])
+    // })
   }
 
 }

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Http, Response as HttpResponse } from '@angular/http';
-import { Observable as RxObservable } from "rxjs/Observable";
+import { Observable as RxObservable} from 'rxjs';
 
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
+import 'rxjs/add/operator/toPromise';
 
 import * as marked from 'marked';
 import * as hljs from 'highlight.js';
@@ -28,7 +29,7 @@ export class Article {
   date: Date;
   src: string;
   id: string;
-  html: RxObservable<string>;
+  html: Promise<string>;
 
   constructor(private http: Http, json: any){
     this.title = json.title;
@@ -38,17 +39,16 @@ export class Article {
     this.src = json.src;
     this.id = json.id;
     this.date = new Date(json.date);
-    console.log(this.src);
-
     this.html = this.http
     .get(ARTICLE_ROOT + this.src)
-    .map(this._renderContent)
+    .toPromise()
+    .then(res => this._renderContent(res))
     .catch(_catch);
   }
 
 
   private _renderContent(res: HttpResponse){
-    console.log(res);
+    console.log("downloaded: " + this.src);
     return marked(res.text());
   }
 
@@ -56,6 +56,8 @@ export class Article {
 
 @Injectable()
 export class ArticleService {
+
+  articles: Promise<Article[]>;
 
   constructor(private _http: Http) {
     
@@ -69,14 +71,19 @@ export class ArticleService {
 
           return res;
         }
-    })
+    });
+
+      this.articles = this._http.get(ARTICLE_ROOT + INDEX).toPromise()
+        .then(res => {
+          return res.json().map(a => new Article(this._http, a));
+        })
+        .catch(_catch);
   }
 
-  getArticles(): RxObservable<Article[]> {
-    return this._http
-    .get(ARTICLE_ROOT + INDEX)
-    .map(res => res.json().map(a => new Article(this._http, a)))
-    .catch(_catch);
+  getById(id: string): Promise<Article>{
+    return this.articles
+    .then(art => art.find(a => a.id.toUpperCase() == id.toUpperCase()))
+    .catch(_catch)
   }
 
 }

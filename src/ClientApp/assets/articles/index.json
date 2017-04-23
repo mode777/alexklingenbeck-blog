@@ -1,11 +1,20 @@
 ﻿[
   {
-    "title": "My new article",
+    "title": "My first article",
     "lead": "My snappy comment about the article",
     "tags": [ ".net", "web", "angular" ],
     "src": "article1.md",
     "author": "Alexander Klingenbeck",
     "date": "2017-04-21",
     "id": "TEST_01"
+  },
+  {
+    "title": "My second article",
+    "lead": "My snappy comment about the article 2",
+    "tags": [ ".net", "web", "angular" ],
+    "src": "article2.md",
+    "author": "Alexander Klingenbeck",
+    "date": "2017-04-23",
+    "id": "TEST_02"
   }
 ]
