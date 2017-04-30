@@ -1,0 +1,53 @@
+{{##
+    def.$layout = "layout";
+#}}
+
+{{
+    var model = it.$model;
+    var recent = it.$pages
+        .filter(p => p.userData.date && p.userData.isBlog)
+        .sort((a,b) => b.userData.date - a.userData.date)
+        .filter((_,i) => i < 5);
+}}
+
+<div class="jumbotron bg-primary">
+    <div class="container">
+        <div class="row">
+            <div class="col col-md-9">
+                <h1 class="display-4">{{=model.title}}</h1>
+                <p class="lead">
+                {{? model.lead }}<p class="lead" style="margin-bottom:5px;">{{=model.lead}}</p>{{?}}
+                {{? model.date }}<span class="article-date"><em>{{=model.date.getFullYear()+"/"+model.date.getMonth()+"/"+model.date.getDate()}}</em></span>{{?}}
+                {{? model.tags }}
+                <span>
+                    <a href="{{= it.href("tags.html") }}">Tags:</a>
+                    {{ for(var i=0; i < model.tags.length; i++){ }}
+                    <a href="{{= it.href("tags.html#"+model.tags[i]) }}" class="badge badge-success">{{= model.tags[i] }}</a>
+                    {{ } }}
+                </span>
+                {{?}}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col col-md-9">
+        {{= it.$content }}
+        </div>
+        <div class="col col-md-3">
+
+            <h6 class="text-uppercase">recent articles</h6>
+            {{~recent :v:i}}
+            <div><a href="{{=it.href(v.href)}}">{{=v.userData.title}}</a></div>
+            {{~}}
+
+            <h6 class="text-uppercase">meta</h6>
+            <div><a href="http://stackoverflow.com/users/4361832/mode777?tab=profile">Stack Overflow</a></div>
+            <div><a href="https://github.com/mode777">GitHub</a></div>
+            <div><a href="https://www.linkedin.com/in/alexander-klingenbeck-b51100141/">LinkedIn</a></div>
+            <div><a href="https://www.xing.com/profile/Alexander_Klingenbeck2/cv">Xing</a></div>
+        </div>
+    </div>
+</div>

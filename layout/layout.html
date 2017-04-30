@@ -1,0 +1,61 @@
+{{
+    it.menu = it.$pages
+        .filter( (p) => p.userData.menuOrder )
+        .sort( (a,b) => a.userData.menuOrder - b.userData.menuOrder );
+
+    assetPrefix = it.$config.prefix + it.$config.assets;
+}}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{{= it.$model.title }} - {{= it.$config.title  }} </title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">-->
+        <link rel="stylesheet" href="{{= assetPrefix }}/bootstrap.css">
+        <link rel="stylesheet" href="{{= assetPrefix }}/octicons.min.css">
+        <link rel="stylesheet" href="{{= assetPrefix }}/highlight/agate.css">
+        <link rel="stylesheet" href="{{= assetPrefix }}/styles.css">
+    </head>
+    <body>
+        <header class="navbar navbar-light navbar-toggleable-md">
+            <nav class="container">
+                <button class="navbar-toggler navbar-toggler-right" type="button" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <span class="navbar-brand" href="#">
+                    <svg width="30" height="30" class="octicon text-success" aria-hidden="true"><use xlink:href="{{= assetPrefix }}/sprite.octicons.svg#gist" /></svg>
+                    {{= it.$config.title }}
+                </span>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                    {{  for(let i = 0; i < it.menu.length; i++){
+                            let menuPage = it.menu[i];
+                    }}
+                        <a class="nav-item nav-link {{? menuPage == it.$page || (menuPage.userData.menuTitle == "Blog" && it.$model.isBlog) }}active{{?}}" href="{{= menuPage.href }}">{{= menuPage.userData.menuTitle }}</a>
+                    {{ 
+                        } 
+                    }}
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <div>{{=it.$content}}</div>
+
+        <footer class="bg-faded text-muted">
+            <div class="container">
+                {{? it.$model.disqusId }}
+                {{= it.$layouts["disqus"].template({id: it.$model.disqusId}) }}
+                <hr>
+                {{?}}
+                <div style="text-align:right;">Copyright (c) {{= new Date().getFullYear() }} {{= it.$config.author }}</div>       
+            </div>
+        </footer>
+
+        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    </body>
+</html>

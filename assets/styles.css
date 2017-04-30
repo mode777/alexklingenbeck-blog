@@ -1,0 +1,37 @@
+.jumbotron {
+    color: white;
+}
+
+a {
+    color: #18bc9c;
+}
+
+/*.jumbotron a:not(.badge) {
+    color: #18bc9c;
+}*/
+
+footer {
+    padding: 4rem 0;
+    margin-top: 4rem;
+}
+
+/*.bg-faded {
+    background-color: #e6e6e6;
+}*/
+
+.article-date {
+    opacity: .5;
+}
+
+pre code {
+    display: block;
+    overflow-x: auto;
+    padding: 0.5em;
+    background: #333;
+    color: white;
+}
+
+h6 {
+    margin-top: 1rem;
+    margin-bottom: 0.2rem;
+}

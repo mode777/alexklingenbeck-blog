@@ -1,0 +1,9 @@
+{
+    "out": "../static",
+    "content": "content",
+    "layout": "layout",
+    "assets": "assets",
+    "title": "alexklingenbeck.de",
+    "author": "Alexander Klingenbeck",
+    "prefix": "/"
+}
