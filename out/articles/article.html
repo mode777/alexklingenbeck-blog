@@ -1,0 +1,165 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Article 01 - alexklingenbeck.de </title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">-->
+        <link rel="stylesheet" href="/assets/bootstrap.css">
+        <link rel="stylesheet" href="/assets/octicons.min.css">
+        <link rel="stylesheet" href="/assets/highlight/agate.css">
+        <link rel="stylesheet" href="/assets/styles.css">
+    </head>
+    <body>
+        <header class="navbar navbar-light navbar-toggleable-md">
+            <nav class="container">
+                <button class="navbar-toggler navbar-toggler-right" type="button" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <span class="navbar-brand" href="#">
+                    <svg width="30" height="30" class="octicon text-success" aria-hidden="true"><use xlink:href="/assets/sprite.octicons.svg#gist" /></svg>
+                    alexklingenbeck.de
+                </span>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                    
+                        <a class="nav-item nav-link " href="/home.html">Home</a>
+                    
+                        <a class="nav-item nav-link active" href="/blog.html">Blog</a>
+                    
+                        <a class="nav-item nav-link " href="/about.html">About</a>
+                    
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <div>
+
+
+
+<div class="jumbotron bg-primary">
+    <div class="container">
+        <div class="row">
+            <div class="col col-md-9">
+                <h1 class="display-4">Article 01</h1>
+                <p class="lead">
+                <p class="lead" style="margin-bottom:5px;">This is a test article</p>
+                <span class="article-date"><em>2017/4/28</em></span>
+                
+                <span>
+                    <a href="/tags.html">Tags:</a>
+                    
+                    <a href="/tags.html#.NET" class="badge badge-success">.NET</a>
+                    
+                    <a href="/tags.html#C#" class="badge badge-success">C#</a>
+                    
+                </span>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col col-md-9">
+        <h1 id="customizing-aspnetcore-identity">Customizing AspNetCore Identity</h1>
+<p>Like the traditional Asp.Net, AspNetCore has an Identity module. This provides a big palette of funtions from authentication, authorization and user management. However the standard-implemenentation comes with a very specific technology set in mind, which might not fir the needs of your application. It certainly didn&#39;t fit mine, so I decided to implement certain parts myself while still tapping into the Identity interfaces to still benefits from it&#39;s rich and often security-critical functionality.</p>
+<h2 id="installing-the-dependencies">Installing the dependencies</h2>
+<p>To use the vanilla AspNetCore Identity functionality you should install this NuGet package.</p>
+<ul>
+<li>Microsoft.AspNetCore.Identity</li>
+</ul>
+<p>This will also install <strong>Microsoft.AspNetCore.Authentication.Cookies</strong>. If you want to test the vanilla functionallity make sure you also install <strong>Microsoft.AspNetCore.Identity.EntityFrameworkCore</strong> </p>
+<h2 id="out-of-the-box-functionality">Out of the box functionality</h2>
+<p>Out of the box you will get the following functionality, documented in the offical <a href="https://docs.microsoft.com/en-us/aspnet/core/security/authentication/identity">AspNetCore documentation</a></p>
+<ul>
+<li>Cookie authentification with a focus on server-side renderung (redirects!)</li>
+<li>Using entity Framework to store an ApplicationUser and ApplicationRole table with a focus on SqlServer (haven&#39;t tested it with other providers)</li>
+</ul>
+<p>So if you are creating a new MVC application with Razor-templates from scratch, favourably with Ms SqlServer, you probably want to stick to the documentation above. </p>
+<h2 id="what-we-will-change">What we will change</h2>
+<p>I&#39;m writing a single page application and want to authenticate via ajax. So redirects don&#39;t really make sense in this scenario. When the user hits an endpoint unauthorized, I just want to return a 401 so that the client application can react accordingly.</p>
+<p>Also I already have a user table and for this small application I just want to store an int for the user role instead of having a foreign key to another table. Therefore we will implement a custom user store and we will also take control of principal generation to decide ourselves which information to store inside the cookie. We will still use EntityFrameworkCore but this solution could be easily adapted for any storage solution you can think of.</p>
+<p>Doing that we wil also gain some insights into how this monolitic block called &#39;Identity&#39; is actually quite modular.</p>
+<h2 id="how-identity-is-bootstrapped">How identity is bootstrapped</h2>
+<p>As with other AspNetCore modules Identity follows the <a href="https://en.wikipedia.org/wiki/Dependency_inversion_principle">dependency inversion principle</a>. It&#39;s top level classes <strong>IdentityManager</strong> and <strong>SignInManager</strong> rely on other classes (which mostly are abstracted as interfaces) in their constructors. These other classes are registered as services in the <strong>ConfigureServices</strong> method.</p>
+<p>So when you use the convenience extension...</p>
+<pre><code class="lang-cs">services.AddIdentity&lt;ApplicationUser, IdentityRole&gt;()
+</code></pre>
+<p>...under the hood identity registers all dependencies for you. This is a excerpt from this method&#39;s implemenentation <a href="https://github.com/aspnet/Identity/blob/dev/src/Microsoft.AspNetCore.Identity/IdentityServiceCollectionExtensions.cs">source</a>:</p>
+<pre><code class="lang-cs"><span class="hljs-keyword">using</span> System;
+
+<span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> <span class="hljs-meta-keyword">warning</span> disable 414, 3021</span>
+
+<span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span>Main task<span class="hljs-doctag">&lt;/summary&gt;</span></span>
+<span class="hljs-function"><span class="hljs-keyword">async</span> Task&lt;<span class="hljs-keyword">int</span>, <span class="hljs-keyword">int</span>&gt; <span class="hljs-title">AccessTheWebAsync</span>(<span class="hljs-params"></span>)
+</span>{
+    Console.WriteLine(<span class="hljs-string">"Hello, World!"</span>);
+    <span class="hljs-keyword">string</span> urlContents = <span class="hljs-keyword">await</span> getStringTask;
+    <span class="hljs-keyword">return</span> urlContents.Length;
+}
+</code></pre>
+<p>As you can see there are different classes, each responsible for another aspect of the identity functions. Most of them are provided as interfaces. This means we can implement them ourselves - yay!
+We don&#39;t want to reimplement all of them tough</p>
+
+        </div>
+        <div class="col col-md-3">
+
+            <h6 class="text-uppercase">recent articles</h6>
+            
+            <div><a href="/articles/page-gen.html">How I stopped overengineering and got things done</a></div>
+            
+            <div><a href="/articles/article.html">Article 01</a></div>
+            
+            <div><a href="/articles/article2.html">Article 02</a></div>
+            
+
+            <h6 class="text-uppercase">meta</h6>
+            <div><a href="http://stackoverflow.com/users/4361832/mode777?tab=profile">Stack Overflow</a></div>
+            <div><a href="https://github.com/mode777">GitHub</a></div>
+            <div><a href="https://www.linkedin.com/in/alexander-klingenbeck-b51100141/">LinkedIn</a></div>
+            <div><a href="https://www.xing.com/profile/Alexander_Klingenbeck2/cv">Xing</a></div>
+        </div>
+    </div>
+</div>
+</div>
+
+        <footer class="bg-faded text-muted">
+            <div class="container">
+                
+                <div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    
+    var disqus_config = function () {
+        this.page.identifier = "TEST_01"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    
+    (function() {  // REQUIRED CONFIGURATION VARIABLE: EDIT THE SHORTNAME BELOW
+        var d = document, s = d.createElement('script');
+        
+        s.src = 'http://alexklingenbeck.disqus.com/embed.js';  // IMPORTANT: Replace EXAMPLE with your forum shortname!
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+                <hr>
+                
+                <div style="text-align:right;">Copyright (c) 2017 Alexander Klingenbeck</div>       
+            </div>
+        </footer>
+
+        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    </body>
+</html>

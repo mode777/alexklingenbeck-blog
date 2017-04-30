@@ -1,0 +1,135 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>How I stopped overengineering and got things done - alexklingenbeck.de </title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">-->
+        <link rel="stylesheet" href="/assets/bootstrap.css">
+        <link rel="stylesheet" href="/assets/octicons.min.css">
+        <link rel="stylesheet" href="/assets/highlight/agate.css">
+        <link rel="stylesheet" href="/assets/styles.css">
+    </head>
+    <body>
+        <header class="navbar navbar-light navbar-toggleable-md">
+            <nav class="container">
+                <button class="navbar-toggler navbar-toggler-right" type="button" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <span class="navbar-brand" href="#">
+                    <svg width="30" height="30" class="octicon text-success" aria-hidden="true"><use xlink:href="/assets/sprite.octicons.svg#gist" /></svg>
+                    alexklingenbeck.de
+                </span>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                    
+                        <a class="nav-item nav-link " href="/home.html">Home</a>
+                    
+                        <a class="nav-item nav-link active" href="/blog.html">Blog</a>
+                    
+                        <a class="nav-item nav-link " href="/about.html">About</a>
+                    
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <div>
+
+
+
+<div class="jumbotron bg-primary">
+    <div class="container">
+        <div class="row">
+            <div class="col col-md-9">
+                <h1 class="display-4">How I stopped overengineering and got things done</h1>
+                <p class="lead">
+                <p class="lead" style="margin-bottom:5px;">A little story of how I struggled to make this simple blog</p>
+                <span class="article-date"><em>2017/4/30</em></span>
+                
+                <span>
+                    <a href="/tags.html">Tags:</a>
+                    
+                    <a href="/tags.html#node" class="badge badge-success">node</a>
+                    
+                    <a href="/tags.html#meta" class="badge badge-success">meta</a>
+                    
+                </span>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col col-md-9">
+        <p>To be honest, it took me several tries to get this simple blog working. This is kind of embarassing for a web developer, but hear me out! </p>
+<p>About half a year ago, I got fed up with using my Raspberry PI with DynDns and got me a vServer and a top-level domain. The main motivation, 
+other then hosting all sorts of crazy stuff like <a href="http://alexklingenbeck.de:3000">Gogs</a> and <a href="http://alexklingenbeck.de/kindergarten">random experiments</a>, was to have a personal blog.</p>
+<p>For most people this would have been straightforward: Head to tumblr or install wordpress or any other CMS. But this was far too mundane for me. Oh no - it had to be state of the art, and custom-made. </p>
+<h2 id="first-fail">First fail</h2>
+<p>First thing I tried was a Kendo-UI SPA setup I mostly run at work. I made some modifications that quickly escalated into a full-blown framework. Of course this slightly shifted away my focus from the blog, but at least we could use the improvements at work.</p>
+<h2 id="second-fail">Second fail</h2>
+<p>A few weeks ago, I decided to give the blog another try. This time I decided to use Angular (4) and Asp.net Core. In the former I didn&#39;t have much experience, in the later nobody had much experience at the time. After I dragged myself through the swamp that is Webpack configurations and getting to run asp.net core on linux as well as the question wether to use &quot;project.json&quot; or &quot;*.csproj&quot; and why in the world this even has to be such a big deal, I got the boat floating - beautifully.</p>
+<p>After getting bootstrap integration to work and hosting a first prototype, I proudly showed it to a fellow student. </p>
+
+        </div>
+        <div class="col col-md-3">
+
+            <h6 class="text-uppercase">recent articles</h6>
+            
+            <div><a href="/articles/page-gen.html">How I stopped overengineering and got things done</a></div>
+            
+            <div><a href="/articles/article.html">Article 01</a></div>
+            
+            <div><a href="/articles/article2.html">Article 02</a></div>
+            
+
+            <h6 class="text-uppercase">meta</h6>
+            <div><a href="http://stackoverflow.com/users/4361832/mode777?tab=profile">Stack Overflow</a></div>
+            <div><a href="https://github.com/mode777">GitHub</a></div>
+            <div><a href="https://www.linkedin.com/in/alexander-klingenbeck-b51100141/">LinkedIn</a></div>
+            <div><a href="https://www.xing.com/profile/Alexander_Klingenbeck2/cv">Xing</a></div>
+        </div>
+    </div>
+</div>
+</div>
+
+        <footer class="bg-faded text-muted">
+            <div class="container">
+                
+                <div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    
+    var disqus_config = function () {
+        this.page.identifier = "17-04-page-gen"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    
+    (function() {  // REQUIRED CONFIGURATION VARIABLE: EDIT THE SHORTNAME BELOW
+        var d = document, s = d.createElement('script');
+        
+        s.src = 'http://alexklingenbeck.disqus.com/embed.js';  // IMPORTANT: Replace EXAMPLE with your forum shortname!
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+                <hr>
+                
+                <div style="text-align:right;">Copyright (c) 2017 Alexander Klingenbeck</div>       
+            </div>
+        </footer>
+
+        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    </body>
+</html>
