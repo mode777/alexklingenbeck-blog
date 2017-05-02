@@ -1,0 +1,23 @@
+{{##
+    def.$layout = "layout";
+    def.menuTitle = "Home";
+    def.menuOrder = 1;
+ #}}
+
+<div  class="jumbotron bg-primary">
+    <div  class="container">
+        <div  class="row">
+            <div  class="col  text-center">
+                <img  alt="self-Logo" class="align-middle img-title" height="200" src="{{=it.asset("/sm_square.jpg")}}" width="200">
+            </div>
+            <div  class="col-9">
+                <h1  class="display-4">
+                    <svg width="75" height="75" class="octicon text-success" aria-hidden="true"><use xlink:href="{{= it.asset("/sprite.octicons.svg#gist") }}" /></svg>
+                    alexklingenbeck.de
+                </h1>
+                <p  class="lead">Welcome to the personal blog of <a  href="{{=it.href("/about.html")}}">Alexander Klingenbeck</a>. Here I blog about my programming adventures with <a  href="{{=it.href("/tags.html#web")}}">web developement</a>, <a   href="{{=it.href("/tags.html#open-gl")}}">openg gl</a> and <a  href="{{=it.href("/tags.html#web")}}">a lot more</a>. </p>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -21,9 +21,9 @@
                 {{? model.tags }}
                 <span>
                     <a href="{{= it.href("tags.html") }}">Tags:</a>
-                    {{ for(var i=0; i < model.tags.length; i++){ }}
-                    <a href="{{= it.href("tags.html#"+model.tags[i]) }}" class="badge badge-success">{{= model.tags[i] }}</a>
-                    {{ } }}
+                    {{~model.tags :tag:i}}
+                    <a href="{{= it.href("tags.html#"+tag) }}" class="badge badge-success">{{= tag }}</a>
+                    {{~}}
                 </span>
                 {{?}}
             </div>
@@ -33,10 +33,10 @@
 
 <div class="container">
     <div class="row">
-        <div class="col col-md-9">
+        <div class="col-md-9">
         {{= it.$content }}
         </div>
-        <div class="col col-md-3">
+        <div class="col-md-3">
 
             <h6 class="text-uppercase">recent articles</h6>
             {{~recent :v:i}}

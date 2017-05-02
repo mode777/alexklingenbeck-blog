@@ -19,6 +19,7 @@
     });
 }}
 
+
 {{
     for(var tag in pagesByTag){
         var pages = pagesByTag[tag]; 
@@ -26,18 +27,11 @@
 
 <h3 id="{{=tag}}"> {{=tag}} </h3><hr>
 <ul>
-{{
-        for(var i=0; i < pages.length; i++){
-            var page = pages[i];
-}}
+{{~pages :page:i}}
     <li class="text-success"><a href="{{= it.href(page.href) }}">
     <strong>{{= page.userData.title }}</strong> - {{= page.userData.lead }}
     </a></li>
-{{
-        }
-}}
+{{~}}
 </ul>
-{{
-    }
-}}
+{{ } }}
 

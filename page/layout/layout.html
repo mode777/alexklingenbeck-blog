@@ -1,5 +1,5 @@
 {{
-    it.menu = it.$pages
+    var menu = it.$pages
         .filter( (p) => p.userData.menuOrder )
         .sort( (a,b) => a.userData.menuOrder - b.userData.menuOrder );
 
@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>{{= it.$model.title }} - {{= it.$config.title  }} </title>
+        <title>{{= it.$model.title || it.$model.menuTitle  }} - {{= it.$config.title }} </title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">-->
@@ -19,28 +19,25 @@
         <link rel="stylesheet" href="{{= assetPrefix }}/styles.css">
     </head>
     <body>
-        <header class="navbar navbar-light navbar-toggleable-md">
-            <nav class="container">
-                <button class="navbar-toggler navbar-toggler-right" type="button" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <div class="container">
+            <nav class="navbar navbar-toggleable-md navbar-light">
+                <button class="navbar-toggler navbar-toggler-right collapsed" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <span class="navbar-brand" href="#">
-                    <svg width="30" height="30" class="octicon text-success" aria-hidden="true"><use xlink:href="{{= assetPrefix }}/sprite.octicons.svg#gist" /></svg>
-                    {{= it.$config.title }}
-                </span>
-                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div class="navbar-nav">
-                    {{  for(let i = 0; i < it.menu.length; i++){
-                            let menuPage = it.menu[i];
-                    }}
-                        <a class="nav-item nav-link {{? menuPage == it.$page || (menuPage.userData.menuTitle == "Blog" && it.$model.isBlog) }}active{{?}}" href="{{= menuPage.href }}">{{= menuPage.userData.menuTitle }}</a>
-                    {{ 
-                        } 
-                    }}
-                    </div>
+                        <svg width="30" height="30" class="octicon text-success" aria-hidden="true"><use xlink:href="{{= it.asset("/sprite.octicons.svg#gist") }}" /></svg>
+                        {{= it.$config.title }}
+                    </span>
+                <div class="navbar-collapse collapse" id="navbarCollapse" aria-expanded="false">
+                    <div class="navbar-nav mr-auto">
+                        {{~menu :menuPage:i}}
+                            <a class="nav-item nav-link {{? menuPage == it.$page || (menuPage.userData.menuTitle == "Blog" && it.$model.isBlog) }}active{{?}}" href="{{= menuPage.href }}">{{= menuPage.userData.menuTitle }}</a>
+                        {{~}}
+                        
+                    </ul>
                 </div>
             </nav>
-        </header>
+        </div>
 
         <div>{{=it.$content}}</div>
 

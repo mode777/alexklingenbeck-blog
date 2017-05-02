@@ -35,3 +35,7 @@ h6 {
     margin-top: 1rem;
     margin-bottom: 0.2rem;
 }
+
+.img-title {
+    border-radius: 50%;
+}
