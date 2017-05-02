@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Article 02 - alexklingenbeck.de </title>
+        <title>Building Command-Line-Interfaces with Node.js - alexklingenbeck.de </title>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">-->
         <link rel="stylesheet" href="/assets/bootstrap.css">
         <link rel="stylesheet" href="/assets/octicons.min.css">
@@ -27,7 +27,7 @@
                         
                             <a class="nav-item nav-link " href="/index.html">Home</a>
                         
-                            <a class="nav-item nav-link active" href="/blog.html">Blog</a>
+                            <a class="nav-item nav-link active" href="/articles\17-05-page-gen.html">Blog</a>
                         
                             <a class="nav-item nav-link " href="/about.html">About</a>
                         
@@ -45,19 +45,15 @@
     <div class="container">
         <div class="row">
             <div class="col col-md-9">
-                <h1 class="display-4">Article 02</h1>
+                <h1 class="display-4">Building Command-Line-Interfaces with Node.js</h1>
                 <p class="lead">
-                <p class="lead" style="margin-bottom:5px;">This is a test article 2</p>
-                <span class="article-date"><em>2016/4/28</em></span>
+                <p class="lead" style="margin-bottom:5px;">This tutorial will guide you through the steps required to create expressive cli applications with node.</p>
+                <span class="article-date"><em>2017/5/2</em></span>
                 
                 <span>
                     <a href="/tags.html">Tags:</a>
                     
-                    <a href="/tags.html#.NET" class="badge badge-success">.NET</a>
-                    
-                    <a href="/tags.html#Javascript" class="badge badge-success">Javascript</a>
-                    
-                    <a href="/tags.html#Typescript" class="badge badge-success">Typescript</a>
+                    <a href="/tags.html#nodejs" class="badge badge-success">nodejs</a>
                     
                 </span>
                 
@@ -69,21 +65,23 @@
 <div class="container">
     <div class="row">
         <div class="col-md-9">
-        <h1 id="article-2">Article 2</h1>
-<p>smxjd fmcvfjmv fvkmvk</p>
-<h2 id="subarticle">Subarticle</h2>
-<p>kxckld vkfmlk lkmlk kmkl ffd ld dde</p>
-
+        <p>I recently turned my static website generator <a href="/articles/17-05-page-gen.html">page-gen</a> into a command-line-interface (CLI). As it turns out it&#39;s incredly easy to create and distribute with node.</p>
+<h1 id="why-node-js">Why node.js</h1>
+<p>Building a CLI should be an easy task in every programming language. However I always found it cumbersome to distribute them, especially under windows. With npm distribution, installation and usage just boils down to</p>
+<pre><code><span class="hljs-meta">&gt;</span><span class="bash">npm publish</span>
+<span class="hljs-meta">&gt;</span><span class="bash">npm install -g your-app </span>
+<span class="hljs-meta">&gt;</span><span class="bash">your-app --option</span>
+</code></pre>
         </div>
         <div class="col-md-3">
 
             <h6 class="text-uppercase">recent articles</h6>
             
-            <div><a href="/articles/page-gen.html">How I stopped overengineering and got things done</a></div>
+            <div><a href="/articles/17-05-page-gen.html">Getting started with page-gen</a></div>
             
-            <div><a href="/articles/article.html">Article 01</a></div>
+            <div><a href="/articles/17-05-cli-nodejs.html">Building Command-Line-Interfaces with Node.js</a></div>
             
-            <div><a href="/articles/article2.html">Article 02</a></div>
+            <div><a href="/articles/17-05-blog.html">All good things come in threes</a></div>
             
 
             <h6 class="text-uppercase">meta</h6>
@@ -107,7 +105,7 @@
      */
     
     var disqus_config = function () {
-        this.page.identifier = "TEST_02"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        this.page.identifier = "17-05-cli-nodejs"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
     };
     
     (function() {  // REQUIRED CONFIGURATION VARIABLE: EDIT THE SHORTNAME BELOW

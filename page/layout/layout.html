@@ -1,9 +1,16 @@
 {{
+    var newestBlog = it.$pages
+        .filter(p => p.userData.date && p.userData.isBlog)
+        .sort((a,b) => b.userData.date - a.userData.date)[0];
+    newestBlog.userData["menuOrder"] = 2;
+    newestBlog.userData["menuTitle"] = "Blog";
+    
     var menu = it.$pages
         .filter( (p) => p.userData.menuOrder )
         .sort( (a,b) => a.userData.menuOrder - b.userData.menuOrder );
 
     assetPrefix = it.$config.prefix + it.$config.assets;
+
 }}
 
 <!DOCTYPE html>
@@ -11,7 +18,7 @@
     <head>
         <title>{{= it.$model.title || it.$model.menuTitle  }} - {{= it.$config.title }} </title>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">-->
         <link rel="stylesheet" href="{{= assetPrefix }}/bootstrap.css">
         <link rel="stylesheet" href="{{= assetPrefix }}/octicons.min.css">
