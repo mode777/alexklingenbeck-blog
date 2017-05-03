@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Tags - alexklingenbeck.de </title>
+        <title>Using Angular CLI with ASP.NET Core - alexklingenbeck.de </title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">-->
@@ -27,7 +27,7 @@
                         
                             <a class="nav-item nav-link " href="/index.html">Home</a>
                         
-                            <a class="nav-item nav-link " href="/articles\17-05-page-gen.html">Blog</a>
+                            <a class="nav-item nav-link active" href="/articles\17-05-page-gen.html">Blog</a>
                         
                             <a class="nav-item nav-link " href="/about.html">About</a>
                         
@@ -45,10 +45,19 @@
     <div class="container">
         <div class="row">
             <div class="col col-md-9">
-                <h1 class="display-4">Tags</h1>
+                <h1 class="display-4">Using Angular CLI with ASP.NET Core</h1>
                 <p class="lead">
-                <p class="lead" style="margin-bottom:5px;">All articles grouped by tag.</p>
+                <p class="lead" style="margin-bottom:5px;">It is possible to integrate the convenience of Angular CLI into a ASP.NET Core application - find out how!</p>
+                <span class="article-date"><em>2017/5/3</em></span>
                 
+                <span>
+                    <a href="/tags.html">Tags:</a>
+                    
+                    <a href="/tags.html#angular" class="badge badge-success">angular</a>
+                    
+                    <a href="/tags.html#asp.net core" class="badge badge-success">asp.net core</a>
+                    
+                </span>
                 
             </div>
         </div>
@@ -58,65 +67,31 @@
 <div class="container">
     <div class="row">
         <div class="col-md-9">
-            
-
-
-
-
-
-
-<h3 class="tag-heading" id="angular"> angular </h3>
-
-    <div>
-        <a href="/articles/17-05-angular-asp-net-core.html"><strong>Using Angular CLI with ASP.NET Core</strong></a>
-        <br>
-        It is possible to integrate the convenience of Angular CLI into a ASP.NET Core application - find out how!
-    </div>
-
-
-
-<h3 class="tag-heading" id="asp.net core"> asp.net core </h3>
-
-    <div>
-        <a href="/articles/17-05-angular-asp-net-core.html"><strong>Using Angular CLI with ASP.NET Core</strong></a>
-        <br>
-        It is possible to integrate the convenience of Angular CLI into a ASP.NET Core application - find out how!
-    </div>
-
-
-
-<h3 class="tag-heading" id="nodejs"> nodejs </h3>
-
-    <div>
-        <a href="/articles/17-05-blog.html"><strong>All good things come in threes</strong></a>
-        <br>
-        Why it took me three tries to create this blog and what I learned on the way
-    </div>
-
-    <div>
-        <a href="/articles/17-05-cli-nodejs.html"><strong>Building Command-Line-Interfaces with Node.js</strong></a>
-        <br>
-        This tutorial will guide you through the steps required to create expressive CLI applications with Node.js.
-    </div>
-
-    <div>
-        <a href="/articles/17-05-page-gen.html"><strong>Getting started with page-gen</strong></a>
-        <br>
-        A simple static website generator
-    </div>
-
-
-
-<h3 class="tag-heading" id="meta"> meta </h3>
-
-    <div>
-        <a href="/articles/17-05-blog.html"><strong>All good things come in threes</strong></a>
-        <br>
-        Why it took me three tries to create this blog and what I learned on the way
-    </div>
-
-
-
+        <h2 id="angular-cli">Angular CLI</h2>
+<p>Setting up an Angular app is not a simple task. Appart from creating the relatively complex project structure and configure the typescript compiler and install type definitions, you have to choose a module and/or build system and rig it all together. </p>
+<p>Angular CLI does a great job in getting you started. Some of it&#39;s features include:</p>
+<ul>
+<li>A webpack-based incremental buildsystem, which will transform your Typescript modules into Javascript and bundle them into a few files which can be minified.</li>
+<li>A built in dev-server which supports hot module replacement. This way you can instantly see your changes without having to reload your browser.</li>
+<li>Support unit tests and for end to end testing (Running tests in a headless browser).</li>
+<li>Scaffolding modules, components and services via the CLI.</li>
+</ul>
+<h2 id="what-s-the-problem-">What&#39;s the problem?</h2>
+<p>As you can see Angular CLI does abstract a lot of the complexity away. This also leads to a problem:
+As most of the convenience functions are coupled to the dev-server. Apart from hot module replacement this includes rerouting arbitrary routes back to your index.html so you can use push-API-style URLs. Even worse, Angular CLI is hiding the webpack configuration for some reason I have yet to discover. </p>
+<p>At this point you have two options:</p>
+<ol>
+<li>Keep your client app seperate from your API and enable <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS">CORS</a>. (This still won&#39;t solve your routing problem in production) </li>
+<li>Read on...</li>
+</ol>
+<h2 id="enter-aspnetcore-spaservices">Enter: AspNetCore.SpaServices</h2>
+<p>Fortunately we can make our ASP.NET Core application solve most of these problems with a nuget package called <code>Microsoft.AspNetCore.SpaServices</code>. This package can...</p>
+<ul>
+<li>...run our webpack-build for us</li>
+<li>...handle hot module replacement</li>
+<li>...help us with server-side routing</li>
+</ul>
+<p>SpaService can also do server-side prerendering which is extremely useful e.g. for SEO, but I will save this for a future post.</p>
 
         </div>
         <div class="col-md-3">
@@ -144,6 +119,29 @@
 
         <footer class="bg-faded text-muted">
             <div class="container">
+                
+                <div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    
+    var disqus_config = function () {
+        this.page.identifier = "17-05-angular-asp-net-core"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    
+    (function() {  // REQUIRED CONFIGURATION VARIABLE: EDIT THE SHORTNAME BELOW
+        var d = document, s = d.createElement('script');
+        
+        s.src = 'http://alexklingenbeck.disqus.com/embed.js';  // IMPORTANT: Replace EXAMPLE with your forum shortname!
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+                <hr>
                 
                 <div style="text-align:right;">Copyright (c) 2017 Alexander Klingenbeck</div>       
             </div>

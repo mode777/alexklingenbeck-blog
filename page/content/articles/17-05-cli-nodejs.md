@@ -3,7 +3,7 @@
     def.isBlog = true;
     def.disqusId = "17-05-cli-nodejs";
     def.title = "Building Command-Line-Interfaces with Node.js";
-    def.lead = "This tutorial will guide you through the steps required to create expressive cli applications with node.";
+    def.lead = "This tutorial will guide you through the steps required to create expressive CLI applications with Node.js.";
     def.date = new Date(2017, 5, 2);
     def.tags = ["nodejs"];
 #}}
