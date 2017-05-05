@@ -4,6 +4,19 @@
     def.menuOrder = 1;
  #}}
 
+{{
+    var recent = it.$pages
+        .filter(p => p.userData.date && p.userData.isBlog)
+        .sort((a,b) => b.userData.date - a.userData.date)
+        .filter((_,i) => i < 5);
+}}
+
+{{
+    var formatDate = function(date){
+        return date.getFullYear()+"/"+date.getMonth()+"/"+date.getDate();
+    };
+}}
+
 <div  class="jumbotron bg-primary">
     <div  class="container">
         <div  class="row">
@@ -21,3 +34,32 @@
     </div>
 </div>
 
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <h3 class="text-uppercase">Recent articles</h3>
+            <ul>
+                {{~recent:page:i}}
+                <li>
+                    <em>{{=formatDate(page.userData.date)}}</em> - <a href="{{=page.href}}">{{=page.userData.title}}</a>
+                    <br>
+                    {{?page.userData.tags}}
+                    {{~page.userData.tags:tag:j}}
+                    <a href="{{= it.href("tags.html#"+tag) }}" class="badge badge-success">{{= tag }}</a>
+                    {{~}}
+                    {{?}}
+                    {{=page.userData.lead}}
+                </li>
+                {{~}}
+            </ul>
+            <a href="{{=it.href("/tags.html")}}">Browse articles by tags</a>
+        </div>
+        <div class="col-md-3">
+            <h3 class="text-uppercase">About Me</h3>
+            <p>
+                I’m a passionate software developer, always eager to learn new technologies and becoming more proficient in known ones.
+            </p>
+            <a href="{{=it.href("/about.html")}}">Read more ></a>
+        </div>
+    </div>
+</div>
