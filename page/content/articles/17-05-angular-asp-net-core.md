@@ -1,11 +1,13 @@
 {{##
     def.$layout = "article";
-    def.isBlog = true;
     def.disqusId = "17-05-angular-asp-net-core";
     def.title = "Using Angular CLI with ASP.NET Core";
     def.lead = "It is possible to integrate the convenience of Angular CLI into a ASP.NET Core application - find out how!";
-    def.date = new Date(2017, 5, 3);
     def.tags = ["angular", "asp.net core"];
+    /*
+    def.isBlog = true;
+    def.date = new Date(2017, 5, 3);
+    */
 #}}
 
 ## Angular CLI

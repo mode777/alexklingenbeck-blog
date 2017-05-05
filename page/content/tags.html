@@ -6,7 +6,9 @@
 
 {{
     pagesByTag = {};
-    it.$pages.forEach(p => {
+    it.$pages
+    .filter(p => p.userData.isBlog)
+    .forEach(p => {
         var tags = p.userData.tags;
         if(tags){
             tags.forEach(t => {
