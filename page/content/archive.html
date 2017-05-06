@@ -1,0 +1,37 @@
+    {{##
+        def.$layout = "article";
+        def.title = "Archive";
+        def.lead = "All articles grouped by year."
+    #}}
+
+{{
+    pagesByYear = {};
+    it.$pages
+    .filter(p => p.userData.isBlog)
+    .forEach(p => {
+        var date = p.userData.date;
+        if(date){
+            if(!pagesByYear[date.getFullYear()]){
+                pagesByYear[date.getFullYear()] = [];
+            }
+            pagesByYear[date.getFullYear()].push(p);            
+        }
+    });
+}}
+
+
+{{
+    for(var year in pagesByYear){
+        var pages = pagesByYear[year]; 
+}}
+
+<h3 class="tag-heading text-uppercase" id="{{=year}}"> {{=year}} </h3>
+{{~pages :page:i}}
+    <div>
+        <a href="{{= it.href(page.href) }}"><strong>{{= page.userData.title }}</strong></a>
+        <br>
+        {{= page.userData.lead }}
+    </div>
+{{~}}
+{{ } }}
+

@@ -4,6 +4,7 @@
     "layout": "layout",
     "assets": "assets",
     "title": "alexklingenbeck.de",
+    "disqusShortname": "alexklingenbeck",
     "author": "Alexander Klingenbeck",
     "prefix": "/"
 }

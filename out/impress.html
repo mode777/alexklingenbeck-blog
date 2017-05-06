@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Using Angular CLI with ASP.NET Core - alexklingenbeck.de </title>
+        <title>Impressum - alexklingenbeck.de </title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <link rel="stylesheet" href="/assets/bootstrap.css">
@@ -44,19 +44,10 @@
     <div class="container">
         <div class="row">
             <div class="col col-md-9">
-                <h1 class="display-4">Using Angular CLI with ASP.NET Core</h1>
+                <h1 class="display-4">Impressum</h1>
                 <p class="lead">
-                <p class="lead" style="margin-bottom:5px;">It is possible to integrate the convenience of Angular CLI into a ASP.NET Core application - find out how!</p>
                 
                 
-                <span>
-                    <a href="/tags.html">Tags:</a>
-                    
-                    <a href="/tags.html#angular" class="badge badge-success">angular</a>
-                    
-                    <a href="/tags.html#asp.net core" class="badge badge-success">asp.net core</a>
-                    
-                </span>
                 
             </div>
         </div>
@@ -66,31 +57,22 @@
 <div class="container">
     <div class="row">
         <div class="col-md-9">
-        <h2 id="angular-cli">Angular CLI</h2>
-<p>Setting up an Angular app is not a simple task. Appart from creating the relatively complex project structure and configure the typescript compiler and install type definitions, you have to choose a module and/or build system and rig it all together. </p>
-<p>Angular CLI does a great job in getting you started. Some of it&#39;s features include:</p>
-<ul>
-<li>A webpack-based incremental buildsystem, which will transform your Typescript modules into Javascript and bundle them into a few files which can be minified.</li>
-<li>A built in dev-server which supports hot module replacement. This way you can instantly see your changes without having to reload your browser.</li>
-<li>Support unit tests and for end to end testing (Running tests in a headless browser).</li>
-<li>Scaffolding modules, components and services via the CLI.</li>
-</ul>
-<h2 id="what-s-the-problem-">What&#39;s the problem?</h2>
-<p>As you can see Angular CLI does abstract a lot of the complexity away. This also leads to a problem:
-As most of the convenience functions are coupled to the dev-server. Apart from hot module replacement this includes rerouting arbitrary routes back to your index.html so you can use push-API-style URLs. Even worse, Angular CLI is hiding the webpack configuration for some reason I have yet to discover. </p>
-<p>At this point you have two options:</p>
-<ol>
-<li>Keep your client app seperate from your API and enable <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS">CORS</a>. (This still won&#39;t solve your routing problem in production) </li>
-<li>Read on...</li>
-</ol>
-<h2 id="enter-aspnetcore-spaservices">Enter: AspNetCore.SpaServices</h2>
-<p>Fortunately we can make our ASP.NET Core application solve most of these problems with a nuget package called <code>Microsoft.AspNetCore.SpaServices</code>. This package can...</p>
-<ul>
-<li>...run our webpack-build for us</li>
-<li>...handle hot module replacement</li>
-<li>...help us with server-side routing</li>
-</ul>
-<p>SpaService can also do server-side prerendering which is extremely useful e.g. for SEO, but I will save this for a future post.</p>
+        <p>Alexander Klingenbeck<br>
+Hermannstr. 40<br>
+90439 Nürnberg<br>
+Germany<br></p>
+<p>E-Mail: admin@alexklingenbeck.de</p>
+<h1 id="haftungsausschluss-">Haftungsausschluss:</h1>
+<h2 id="haftung-f-r-inhalte">Haftung für Inhalte</h2>
+<p>Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.</p>
+<h2 id="haftung-f-r-links">Haftung für Links</h2>
+<p>Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.</p>
+<h2 id="urheberrecht">Urheberrecht</h2>
+<p>Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers. Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet. Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Insbesondere werden Inhalte Dritter als solche gekennzeichnet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.</p>
+<h2 id="datenschutz">Datenschutz</h2>
+<p>Die Nutzung unserer Webseite ist in der Regel ohne Angabe personenbezogener Daten möglich. Soweit auf unseren Seiten personenbezogene Daten (beispielsweise Name, Anschrift oder eMail-Adressen) erhoben werden, erfolgt dies, soweit möglich, stets auf freiwilliger Basis. Diese Daten werden ohne Ihre ausdrückliche Zustimmung nicht an Dritte weitergegeben.</p>
+<p>Wir weisen darauf hin, dass die Datenübertragung im Internet (z.B. bei der Kommunikation per E-Mail) Sicherheitslücken aufweisen kann. Ein lückenloser Schutz der Daten vor dem Zugriff durch Dritte ist nicht möglich.</p>
+<p>Der Nutzung von im Rahmen der Impressumspflicht veröffentlichten Kontaktdaten durch Dritte zur Übersendung von nicht ausdrücklich angeforderter Werbung und Informationsmaterialien wird hiermit ausdrücklich widersprochen. Die Betreiber der Seiten behalten sich ausdrücklich rechtliche Schritte im Falle der unverlangten Zusendung von Werbeinformationen, etwa durch Spam-Mails, vor.</p>
 
         </div>
         <div class="col-md-3">
@@ -114,24 +96,6 @@ As most of the convenience functions are coupled to the dev-server. Apart from h
 
         <footer class="bg-faded text-muted">
             <div class="container">
-                
-                <div id="disqus_thread"></div>
-<script>
-    var disqus_config = function () {
-        this.page.identifier = "17-05-angular-asp-net-core";
-    };
-    
-    (function() { 
-        var d = document, s = d.createElement('script');
-        
-        s.src = 'http://alexklingenbeck.disqus.com/embed.js';
-        
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-                <hr>
                 
                 <div style="text-align:right;"><a href="/impress.html">Impressum</a> - Copyright (c) 2017 Alexander Klingenbeck - made with <a href="https://github.com/mode777/page-gen">page-gen</a></div>       
             </div>
