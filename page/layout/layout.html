@@ -16,9 +16,10 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>{{= it.$model.title || it.$model.menuTitle  }} - {{= it.$config.title }} </title>
+        <title>{{= it.$model.title || it.$model.menuTitle  }} - {{= it.$config.title }}</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        {{? it.$model.lead}} <meta name="description=" content="{{=it.$model.lead}}">{{?}}
         <link rel="stylesheet" href="{{= assetPrefix }}/bootstrap.css">
         <link rel="stylesheet" href="{{= assetPrefix }}/octicons.min.css">
         <link rel="stylesheet" href="{{= assetPrefix }}/highlight/agate.css">
