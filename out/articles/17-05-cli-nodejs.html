@@ -6,7 +6,7 @@
         <title>Building Command-Line-Interfaces with Node.js - alexklingenbeck.de</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-         <meta name="description=" content="This tutorial will guide you through the steps required to create expressive CLI applications with Node.js.">
+         <meta name="description=" content="This tutorial will guide you through the steps required to create and publish expressive, cross-platform CLI applications with Node.js and Commander.js.">
         <link rel="stylesheet" href="/assets/bootstrap.css">
         <link rel="stylesheet" href="/assets/octicons.min.css">
         <link rel="stylesheet" href="/assets/highlight/agate.css">
@@ -27,7 +27,7 @@
                         
                             <a class="nav-item nav-link " href="/index.html">Home</a>
                         
-                            <a class="nav-item nav-link " href="/articles\17-05-blog.html">Blog</a>
+                            <a class="nav-item nav-link active" href="/articles\17-05-cli-nodejs.html">Blog</a>
                         
                             <a class="nav-item nav-link " href="/about.html">About</a>
                         
@@ -47,8 +47,8 @@
             <div class="col col-md-9">
                 <h1 class="display-4">Building Command-Line-Interfaces with Node.js</h1>
                 <p class="lead">
-                <p class="lead" style="margin-bottom:5px;">This tutorial will guide you through the steps required to create expressive CLI applications with Node.js.</p>
-                
+                <p class="lead" style="margin-bottom:5px;">This tutorial will guide you through the steps required to create and publish expressive, cross-platform CLI applications with Node.js and Commander.js.</p>
+                <span class="article-date"><em>2017/5/14</em></span>
                 
                 <span>
                     <a href="/tags.html">Tags:</a>
@@ -65,17 +65,108 @@
 <div class="container">
     <div class="row">
         <div class="col-md-9">
-        <p>I recently turned my static website generator <a href="/articles/17-05-page-gen.html">page-gen</a> into a command-line-interface (CLI). As it turns out it&#39;s incredibly easy to create and distribute with node.</p>
+        <!--I recently turned my static website generator [page-gen](/articles/17-05-page-gen.html) into a command-line-interface (CLI). As it turns out it's incredibly easy to create and distribute with node.-->
 <h1 id="why-node-js">Why node.js</h1>
 <p>Building a CLI should be an easy task in every programming language. However I always found it cumbersome to distribute them - especially under windows. With npm distribution, installation and usage just boils down to</p>
-<pre><code><span class="hljs-meta">&gt;</span><span class="bash">npm publish</span>
-<span class="hljs-meta">&gt;</span><span class="bash">npm install -g your-app </span>
-<span class="hljs-meta">&gt;</span><span class="bash">your-app --option</span>
+<pre><code>npm publish
+npm <span class="hljs-keyword">install</span> -g your-app 
+your-app --<span class="hljs-keyword">option</span>
+</code></pre><p>To follow along this tutorial, you should have <a href="https://nodejs.org/en/">Node.js</a> installed - obviously.</p>
+<h1 id="creating-a-package">Creating a package</h1>
+<p>Create a new folder for your app. Open the command line and create a new node package with <code>npm init</code>. After filling out some info about your package, there will be a file created called <strong>package.json</strong>, which will look similar to this:</p>
+<pre><code>{
+  <span class="hljs-attr">"name"</span>: <span class="hljs-string">"my-cli-app"</span>,
+  <span class="hljs-attr">"version"</span>: <span class="hljs-string">"1.0.0"</span>,
+  <span class="hljs-attr">"description"</span>: <span class="hljs-string">"A demo cli application"</span>,
+  <span class="hljs-attr">"main"</span>: <span class="hljs-string">"index.js"</span>,
+  <span class="hljs-attr">"scripts"</span>: {
+    <span class="hljs-attr">"test"</span>: <span class="hljs-string">"echo \"Error: no test specified\" &amp;&amp; exit 1"</span>
+  },
+  <span class="hljs-attr">"author"</span>: <span class="hljs-string">"Alexander Klingenbeck"</span>,
+  <span class="hljs-attr">"license"</span>: <span class="hljs-string">"MIT"</span>
+}
+</code></pre><h1 id="making-it-executable">Making it executable</h1>
+<p>To make your app available from the command line, package.json has the <a href="https://docs.npmjs.com/files/package.json#bin">&quot;bin&quot; option</a>. Let&#39;s add it:</p>
+<pre><code><span class="hljs-string">"bin"</span>: {
+    <span class="hljs-string">"my-cli-app"</span>: <span class="hljs-string">"./index.js"</span>
+}
+</code></pre><p>This is telling node to run your index.js, when the user types &quot;my-cli-app&quot; on the command line. </p>
+<h2 id="under-the-hood">Under the hood</h2>
+<p>If you are interested, how this works under the hood: During installation Node will create a cmd script (on Windows) or a sh script (on Linux, probably on Mac too) inside it&#39;s path location which looks something like this (on Windows):</p>
+<pre><code><span class="hljs-variable">@IF</span> EXIST <span class="hljs-string">"%~dp0\node.exe"</span> (
+  <span class="hljs-string">"%~dp0\node.exe"</span>  <span class="hljs-string">"%~dp0\node_modules\my-cli-app\index.js"</span> %*
+) ELSE (
+  <span class="hljs-variable">@SETLOCAL</span>
+  <span class="hljs-variable">@SET</span> PATHEXT=%<span class="hljs-attribute">PATHEXT</span>:;.JS;=;%
+  node  <span class="hljs-string">"%~dp0\node_modules\my-cli-app\index.js"</span> %*
+)
+</code></pre><p>Basically this justs runs node with your script as argument. As I said, you do not need to do this yourself. It&#39;s still interesting to know whats going on behind the curtains.</p>
+<h1 id="creating-the-interface-with-commander">Creating the interface with Commander</h1>
+<p>As you might have noticed, we don&#39;t have our <code>index.js</code> yet. Lets create a new file with this name in the same directory.</p>
+<p>You could, theoretically, just write your cli application with no further dependencies from here. The <code>process.argv</code> array will contain all arguments you will need. However, if you want a nice interface, with --help and optional arguments there might be a lot of boilerplate code to write and some regexes to parse (everybody loves regexp, right?).</p>
+<p>Commander.js is a great little framework that will do these tedious tasks for us. To install it run:</p>
+<pre><code>npm <span class="hljs-keyword">install</span> <span class="hljs-comment">--save commander</span>
+</code></pre><p>The <em>--save</em> switch tells npm to add commander as a dependency in your package.json. When someone will install your app, commander is automatically installed as well. Now you can use commander in your app. Here is a simple example, how a simple app could look like:</p>
+<pre><code class="lang-js"><span class="hljs-meta">#!/usr/bin/env node</span>
+
+<span class="hljs-keyword">const</span> commander = <span class="hljs-built_in">require</span>(<span class="hljs-string">"commander"</span>);
+
+<span class="hljs-keyword">let</span> cli = commander
+    .command(<span class="hljs-string">"my-cli-app"</span>)
+    .description(<span class="hljs-string">"Put your description here"</span>)
+    .arguments(<span class="hljs-string">"[myargument]"</span>)
+    .option(<span class="hljs-string">'-m, --myoption &lt;value&gt;'</span>, <span class="hljs-string">'some optional value'</span>)
+    .version(<span class="hljs-string">'1.0.0'</span>)
+    .parse(process.argv);
+
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Argument: "</span>, cli.args[<span class="hljs-number">0</span>]);
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Optional value:"</span>, cli.myoption);
 </code></pre>
+<p>The first line tells the environment, that this is a script to be executed with Node.js. You will typically find this in POSIX environments but here it seems to be necessary on Windows as well. Then we load commander and let it parse our command line arguments. The fluent API is probably pretty self explanatory, I suggest you have a look at the <a href="https://github.com/tj/commander.js/">commander documentation</a> for more info. Now you test the app:</p>
+<pre><code><span class="hljs-keyword">node</span> <span class="hljs-title">index</span>.js MyArgument --myoption OptionalArg
+</code></pre><p>Which should yield this output:</p>
+<pre><code><span class="hljs-meta">&gt;</span><span class="bash">Argument:  MyArgument</span>
+<span class="hljs-meta">&gt;</span><span class="bash">Optional value: OptionalArg</span>
+</code></pre><p>In this example the <code>.option(...)</code> part is the only thing you would really need for your program to work. All the others will contribute to the help page. When you run the app with:</p>
+<pre><code><span class="hljs-keyword">node</span> <span class="hljs-title">index</span>.js --help
+</code></pre><p>You will get a nice little usage information:</p>
+<pre><code><span class="hljs-meta">&gt;</span><span class="bash">  Usage: my-cli-app [options] [myargument]</span>
+<span class="hljs-meta">&gt;</span><span class="bash"></span>
+<span class="hljs-meta">&gt;</span><span class="bash">  Put your description here</span>
+<span class="hljs-meta">&gt;</span><span class="bash"></span>
+<span class="hljs-meta">&gt;</span><span class="bash">  Options:</span>
+<span class="hljs-meta">&gt;</span><span class="bash"></span>
+<span class="hljs-meta">&gt;</span><span class="bash">    -h, --help              output usage information</span>
+<span class="hljs-meta">&gt;</span><span class="bash">    -m, --myoption &lt;value&gt;  some optional value</span>
+<span class="hljs-meta">&gt;</span><span class="bash">    -V, --version           output the version number</span>
+</code></pre><div class="alert alert-danger" role="alert">
+<div><strong>Beware of line feeds</strong></div>
+<p>
+  Make sure your line endings for your index.js are just line feeds (LF) instead of the additional carriage returns you will find on windows (CRLF). I had problems running my app on linux when there were CRs in the file. Most IDEs and editors will let you change these.
+</p>
+<p>
+    If your are using Typescript, you have to add <code>&quot;newLine&quot;: &quot;LF&quot;</code> to your tsconfig.json. 
+</p>
+</div>
+
+<h2 id="publishing-and-installation">Publishing and installation</h2>
+<p>Once your awesome app is finished, all you need to do is publish it to the npm registry so other users can easily install it via npm. If you don&#39;t have an npm account yet, you can easily create one using:<code>npm adduser</code>.
+Now to publish you app, simply type:</p>
+<pre><code><span class="hljs-built_in">npm</span> publish
+</code></pre><p>If you want to update your app, just change the version number in your package.json and run <code>npm publish</code> again.</p>
+<p>Now you can easily install the app from any computer you like by typing:</p>
+<pre><code>npm install -<span class="hljs-keyword">g</span> my-<span class="hljs-keyword">cli</span>-<span class="hljs-keyword">app</span>
+</code></pre><p>The <em>-g</em> parameter tells npm to do a global install. CLI apps should always be globally installed, so you can access them from every directory you like. After installation you can test your app with:</p>
+<pre><code>my-<span class="hljs-keyword">cli</span>-<span class="hljs-keyword">app</span> --<span class="hljs-keyword">help</span>
+</code></pre><h2 id="summary">Summary</h2>
+<p>As you can see, Node.js, NPM and Commander.js make it incredibly easy to create and distribute cross-platform CLI tools. I think this will contribute to the trend of CLI tools in developement, like we have seen with yeoman, tsc or angular-cli. </p>
+
         </div>
         <div class="col-md-3">
 
             <h6 class="text-uppercase">recent articles</h6>
+            
+            <div><a href="/articles/17-05-cli-nodejs.html">Building Command-Line-Interfaces with Node.js</a></div>
             
             <div><a href="/articles/17-05-blog.html">All good things come in threes</a></div>
             

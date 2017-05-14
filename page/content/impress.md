@@ -8,7 +8,7 @@ Hermannstr. 40<br>
 90439 Nürnberg<br>
 Germany<br>
 
-E-Mail: admin@alexklingenbeck.de
+E-Mail: webmaster@alexklingenbeck.de
 
 # Haftungsausschluss:
 
