@@ -17,7 +17,7 @@
                 <h1 class="display-4">{{=model.title}}</h1>
                 <p class="lead">
                 {{? model.lead }}<p class="lead" style="margin-bottom:5px;">{{=model.lead}}</p>{{?}}
-                {{? model.date }}<span class="article-date"><em>{{=model.date.getFullYear()+"/"+model.date.getMonth()+"/"+model.date.getDate()}}</em></span>{{?}}
+                {{? model.date }}<span class="article-date"><em>{{=model.date.getFullYear()+"/"+model.date.getMonth()+1+"/"+model.date.getDate()}}</em></span>{{?}}
                 {{? model.tags }}
                 <span>
                     <a href="{{= it.href("tags.html") }}">Tags:</a>
@@ -46,6 +46,7 @@
             
 
             <h6 class="text-uppercase">meta</h6>
+            <div><a href="http://www.alexklingenbeck.de/feed.xml">Entries RSS</a></div>
             <div><a href="http://stackoverflow.com/users/4361832/mode777?tab=profile">Stack Overflow</a></div>
             <div><a href="https://github.com/mode777">GitHub</a></div>
             <div><a href="https://www.linkedin.com/in/alexander-klingenbeck-b51100141/">LinkedIn</a></div>

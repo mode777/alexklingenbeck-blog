@@ -14,7 +14,7 @@
 
 {{
     var formatDate = function(date){
-        return date.getFullYear()+"/"+date.getMonth()+"/"+date.getDate();
+        return date.getFullYear()+"/"+date.getMonth()+1+"/"+date.getDate();
     };
 }}
 
@@ -55,6 +55,7 @@
             </ul>
             <a href="{{=it.href("/tags.html")}}">Browse articles by tags</a><br>
             <a href="{{=it.href("/archive.html")}}">Archive</a>
+            <div><a href="http://www.alexklingenbeck.de/feed.xml">RSS feed</a></div>
         </div>
         <div class="col-md-3">
             <h3 class="text-uppercase">About Me</h3>

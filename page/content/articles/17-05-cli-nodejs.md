@@ -5,7 +5,7 @@
     def.lead = "This tutorial will guide you through the steps required to create and publish expressive, cross-platform CLI applications with Node.js and Commander.js.";
     def.tags = ["nodejs"];
     def.isBlog = true;
-    def.date = new Date(2017, 5, 14);
+    def.date = new Date(2017, 4, 14);
 #}}
 
 <!--I recently turned my static website generator [page-gen]({{= it.href("articles/17-05-page-gen.html") }}) into a command-line-interface (CLI). As it turns out it's incredibly easy to create and distribute with node.-->

@@ -1,0 +1,18 @@
+{{ 	var articles = it.$pages.filter(x => x.userData.isBlog); }}<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>{{=it.$config.title}}</title>
+		<description>My Website and Blog</description>		
+		<link>http://www.alexklingenbeck.de</link>
+		<atom:link href="http://www.alexklingenbeck.de/feed.xml" rel="self" type="application/rss+xml" />
+			{{~articles:page}}
+            <item>
+				<title>{{=page.userData.title}}</title>
+				<description>{{=page.userData.lead}}</description>
+				<pubDate>{{? page.userData.date}} {{=page.userData.date.toISOString()}} {{?}}</pubDate>
+				<link>http://www.alexklingenbeck.de{{=it.href(page.href)}}</link>
+				<guid isPermaLink="true">http://www.alexklingenbeck.de/{{=it.href(page.href)}}</guid>
+			</item>		
+            {{~}}
+	</channel>
+</rss>

@@ -38,7 +38,7 @@
                 <div class="navbar-collapse collapse" id="navbarCollapse" aria-expanded="false">
                     <div class="navbar-nav mr-auto">
                         {{~menu :menuPage:i}}
-                            <a class="nav-item nav-link {{? menuPage == it.$page || (menuPage.userData.menuTitle == "Blog" && it.$model.isBlog) }}active{{?}}" href="{{= menuPage.href }}">{{= menuPage.userData.menuTitle }}</a>
+                            <a class="nav-item nav-link {{? menuPage == it.$page || (menuPage.userData.menuTitle == "Blog" && it.$model.isBlog) }}active{{?}}" href="{{=it.href(menuPage.href) }}">{{= menuPage.userData.menuTitle }}</a>
                         {{~}}
                         
                     </ul>
