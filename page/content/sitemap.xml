@@ -1,0 +1,53 @@
+{{ 	var articles = it.$pages.filter(x => x.userData.isBlog); }}<?xml version="1.0" encoding="UTF-8"?>
+
+{{
+    var w3date = (date) => date.toISOString().substr(0,10);
+}}
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    <url>
+      <loc>http://www.alexklingenbeck.de/index.html</loc>
+      <lastmod>2017-04-29</lastmod>
+      <changefreq>never</changefreq>
+      <priority>1.0</priority>
+   </url>
+
+   <url>
+      <loc>http://www.alexklingenbeck.de/about.html</loc>
+      <lastmod>2017-04-29</lastmod>
+      <changefreq>yearly</changefreq>
+      <priority>0.7</priority>
+   </url>
+
+    <url>
+      <loc>http://www.alexklingenbeck.de/tags.html</loc>
+      <lastmod>{{=w3date(new Date())}}</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.5</priority>
+   </url>
+
+    <url>
+      <loc>http://www.alexklingenbeck.de/archive.html</loc>
+      <lastmod>{{=w3date(new Date())}}</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.5</priority>
+   </url>
+
+    <url>
+      <loc>http://www.alexklingenbeck.de/impress.html</loc>
+      <lastmod>2017-04-29</lastmod>
+      <changefreq>never</changefreq>
+      <priority>0.1</priority>
+   </url>
+
+    {{~articles:page}}
+   <url>
+      <loc>http://www.alexklingenbeck.de{{=it.href(page.href)}}</loc>
+      <lastmod>{{? page.userData.date}} {{=w3date(page.userData.date)}} {{?}}</lastmod>
+      <changefreq>never</changefreq>
+      <priority>0.8</priority>
+   </url>
+    {{~}}
+
+</urlset> 

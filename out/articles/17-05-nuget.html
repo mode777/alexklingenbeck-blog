@@ -1,0 +1,172 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>How to quickly turn your csproj into a NuGet package - alexklingenbeck.de</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+         <meta name="description=" content="This week I will show you how you can create a NuGet package from your .Net project in three simple steps and how to create a super simple nuget feed.">
+        <link rel="stylesheet" href="/assets/bootstrap.css">
+        <link rel="stylesheet" href="/assets/octicons.min.css">
+        <link rel="stylesheet" href="/assets/highlight/agate.css">
+        <link rel="stylesheet" href="/assets/styles.css">
+    </head>
+    <body>
+        <div class="container">
+            <nav class="navbar navbar-toggleable-md navbar-light">
+                <button class="navbar-toggler navbar-toggler-right collapsed" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <span class="navbar-brand" href="#">
+                        <svg width="30" height="30" class="octicon text-success" aria-hidden="true"><use xlink:href="/assets/sprite.octicons.svg#gist" /></svg>
+                        alexklingenbeck.de
+                    </span>
+                <div class="navbar-collapse collapse" id="navbarCollapse" aria-expanded="false">
+                    <div class="navbar-nav mr-auto">
+                        
+                            <a class="nav-item nav-link " href="/index.html">Home</a>
+                        
+                            <a class="nav-item nav-link active" href="/articles/17-05-nuget.html">Blog</a>
+                        
+                            <a class="nav-item nav-link " href="/about.html">About</a>
+                        
+                        
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <div>
+
+
+
+<div class="jumbotron bg-primary">
+    <div class="container">
+        <div class="row">
+            <div class="col col-md-9">
+                <h1 class="display-4">How to quickly turn your csproj into a NuGet package</h1>
+                <p class="lead">
+                <p class="lead" style="margin-bottom:5px;">This week I will show you how you can create a NuGet package from your .Net project in three simple steps and how to create a super simple nuget feed.</p>
+                <span class="article-date"><em>2017-05-20</em></span>
+                
+                <span>
+                    <a href="/tags.html">Tags:</a>
+                    
+                    <a href="/tags.html#nuget" class="badge badge-success">nuget</a>
+                    
+                    <a href="/tags.html#.net" class="badge badge-success">.net</a>
+                    
+                </span>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+        <h1 id="motivation">Motivation</h1>
+<p>Nuget is a great tool to manage packages and their dependencies. Wouldn&#39;t it be great to use it for your own projects? &quot;Why would I?&quot;, you ask. Imagine if you have a Webservice int <em>Server.sln</em> and a separate project <em>Client.sln</em>. Client might develop the need to consume one or more sub-projects of Server (for instance transfer objects or interfaces). Also you might want to integrate the Client in other projects so that they can use it&#39;s API.</p>
+<p>Of course you could reference the <em>*.csproj</em> project from every solution that needs it, but this might lead an unfamiliar developer to change this project and unknowingly break the other projects. That is if he can even get the solution to load as this shared *.csproj might be in an entirely different repository.</p>
+<p>NuGet can solve these problems, by allowing us to put shared code into a separate package which can be versioned and maintained with NuGet. The process is extremely simple and can be described in just three steps.</p>
+<h1 id="creating-nuget-packages">Creating NuGet packages</h1>
+<h2 id="step-0-download-and-install-nuget">Step 0: Download and install NuGet</h2>
+<p>If you don&#39;t have <strong>nuget.exe</strong> already, download it from <a href="https://dist.nuget.org/index.html">here</a>. It&#39;s best to put it in a PATH location like <em>c:\windows</em>. Now you&#39;re ready to go.</p>
+<h2 id="step-1-create-a-manifest">Step 1: Create a manifest</h2>
+<p>Before you can build packages from your project, you have to create a package manifest <em>*.nuspec</em> file. Just go into the directory of your <em>*.csproj</em>, open a command shell and type <code>nuget spec</code>.
+You should do a quick edit of this file and remove tags with information you don&#39;t want to provide. Make sure you leave the <strong>$properties$</strong> in there, as they get generated form you projects properties. After editing, it might look something like this:</p>
+<pre><code class="lang-xml"><span class="php"><span class="hljs-meta">&lt;?</span>xml version=<span class="hljs-string">"1.0"</span><span class="hljs-meta">?&gt;</span></span>
+<span class="hljs-tag">&lt;<span class="hljs-name">package</span> &gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">metadata</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>$id$<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$version$<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>$title$<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">authors</span>&gt;</span>$author$<span class="hljs-tag">&lt;/<span class="hljs-name">authors</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">owners</span>&gt;</span>$author$<span class="hljs-tag">&lt;/<span class="hljs-name">owners</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">requireLicenseAcceptance</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">requireLicenseAcceptance</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>$description$<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">copyright</span>&gt;</span>Copyright 2017<span class="hljs-tag">&lt;/<span class="hljs-name">copyright</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">metadata</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">package</span>&gt;</span>
+</code></pre>
+<h2 id="step-2-provide-some-package-and-versioning-information">Step 2: Provide some package and versioning information</h2>
+<p>Open your project properties in Visual Studio and fill in some information. Also note that the version provded here will also be the version of your package. If there is a package found with a higher version number, nuget will inform the consumer about updates.</p>
+<p><img src="/assets/17-05-nuget.png" alt="Visual Studio config"></p>
+<p>Make sure to rebuild your project after this!</p>
+<h2 id="step-3-building-the-package">Step 3: Building the package</h2>
+<p>Go back to your project directory and simply type <code>nuget pack</code>. Thats all and you should find your project neatly packaged into a <em>*.nupkg</em> file. This package is also aware of all the dependencies you installed via nuget and will install them alongside with itself.</p>
+<p>You can also try to change the version number in Visual Studio and see that there is a new package emited after rebuilding and repacking.</p>
+<h1 id="publishing-your-package">Publishing your package</h1>
+<p>I can think of three ways you can publish your package:</p>
+<ul>
+<li>Pushing it to the offical nuget feed.</li>
+<li>Pushing it your custom nuget feed / server.</li>
+<li><p>Just putting it somewhere on the filesystem (e.g. a Windows share)</p>
+<p>The first two are interesting topics for a future post. The later is super simple and I will quickly show how to make it happen.</p>
+</li>
+<li><p>Create a new folder e.g. <em>Z:\nuget</em>.</p>
+</li>
+<li>Copy all your packages here. Don&#39;t delete old versions. NuGet will automatically detect them.</li>
+<li><p>Configure Visual Studio to use this folder as a source. Right-click on the project &gt; &quot;Manage NuGet packages&quot; &gt; &quot;Package source&quot; &gt; &quot;Settings&quot;. Create a new source and supply the path to your folder</p>
+<p><img src="/assets/17-05-nuget2.png" alt="NuGet source configuration"></p>
+<p>Now you can choose your custom source from the dropdown menu and see your own packages just like every other package.</p>
+</li>
+</ul>
+
+        </div>
+        <div class="col-md-3">
+
+            <h6 class="text-uppercase">recent articles</h6>
+            
+            <div><a href="/articles/17-05-nuget.html">How to quickly turn your csproj into a NuGet package</a></div>
+            
+            <div><a href="/articles/17-05-cli-nodejs.html">Building Command-Line-Interfaces with Node.js</a></div>
+            
+            <div><a href="/articles/17-05-blog.html">All good things come in threes</a></div>
+            
+            <div><a href="/archive.html"><b>Archive</b></a></div>
+            
+
+            <h6 class="text-uppercase">meta</h6>
+            <div><a href="http://www.alexklingenbeck.de/feed.xml">Entries RSS</a></div>
+            <div><a href="http://stackoverflow.com/users/4361832/mode777?tab=profile">Stack Overflow</a></div>
+            <div><a href="https://github.com/mode777">GitHub</a></div>
+            <div><a href="https://www.linkedin.com/in/alexander-klingenbeck-b51100141/">LinkedIn</a></div>
+            <div><a href="https://www.xing.com/profile/Alexander_Klingenbeck2/cv">Xing</a></div>
+        </div>
+    </div>
+</div>
+</div>
+
+        <footer class="bg-faded text-muted">
+            <div class="container">
+                
+                <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+        this.page.identifier = "17-05-nuget";
+    };
+    
+    (function() { 
+        var d = document, s = d.createElement('script');
+        
+        s.src = 'http://alexklingenbeck.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+                <hr>
+                
+                <div style="text-align:right;"><a href="/impress.html">Impressum</a> - Copyright (c) 2017 Alexander Klingenbeck - made with <a href="https://github.com/mode777/page-gen">page-gen</a></div>       
+            </div>
+        </footer>
+
+        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    </body>
+</html>

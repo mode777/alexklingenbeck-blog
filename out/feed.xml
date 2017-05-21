@@ -22,5 +22,13 @@
 				<guid isPermaLink="true">http://www.alexklingenbeck.de//articles/17-05-cli-nodejs.html</guid>
 			</item>		
             
+            <item>
+				<title>How to quickly turn your csproj into a NuGet package</title>
+				<description>This week I will show you how you can create a NuGet package from your .Net project in three simple steps and how to create a super simple nuget feed.</description>
+				<pubDate> 2017-05-20T22:00:00.000Z </pubDate>
+				<link>http://www.alexklingenbeck.de/articles/17-05-nuget.html</link>
+				<guid isPermaLink="true">http://www.alexklingenbeck.de//articles/17-05-nuget.html</guid>
+			</item>		
+            
 	</channel>
 </rss>

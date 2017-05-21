@@ -13,9 +13,7 @@
 }}
 
 {{
-    var formatDate = function(date){
-        return date.getFullYear()+"/"+date.getMonth()+1+"/"+date.getDate();
-    };
+    var formatDate = (date) => date.toISOString().substr(0,10);
 }}
 
 <div  class="jumbotron bg-primary">

@@ -17,7 +17,7 @@
                 <h1 class="display-4">{{=model.title}}</h1>
                 <p class="lead">
                 {{? model.lead }}<p class="lead" style="margin-bottom:5px;">{{=model.lead}}</p>{{?}}
-                {{? model.date }}<span class="article-date"><em>{{=model.date.getFullYear()+"/"+model.date.getMonth()+1+"/"+model.date.getDate()}}</em></span>{{?}}
+                {{? model.date }}<span class="article-date"><em>{{=model.date.toISOString().substr(0,10)}}</em></span>{{?}}
                 {{? model.tags }}
                 <span>
                     <a href="{{= it.href("tags.html") }}">Tags:</a>
