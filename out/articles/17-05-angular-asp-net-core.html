@@ -27,7 +27,7 @@
                         
                             <a class="nav-item nav-link " href="/index.html">Home</a>
                         
-                            <a class="nav-item nav-link " href="/articles/17-05-nuget.html">Blog</a>
+                            <a class="nav-item nav-link active" href="/articles/17-05-angular-asp-net-core.html">Blog</a>
                         
                             <a class="nav-item nav-link " href="/about.html">About</a>
                         
@@ -48,7 +48,7 @@
                 <h1 class="display-4">Using Angular CLI with ASP.NET Core</h1>
                 <p class="lead">
                 <p class="lead" style="margin-bottom:5px;">It is possible to integrate the convenience of Angular CLI into a ASP.NET Core application - find out how!</p>
-                
+                <span class="article-date"><em>2017-05-27</em></span>
                 
                 <span>
                     <a href="/tags.html">Tags:</a>
@@ -68,7 +68,7 @@
     <div class="row">
         <div class="col-md-9">
         <h2 id="angular-cli">Angular CLI</h2>
-<p>Setting up an Angular app is not a simple task. Appart from creating the relatively complex project structure and configure the typescript compiler and install type definitions, you have to choose a module and/or build system and rig it all together. </p>
+<p>Setting up an Angular app is not a simple task. Appart from creating the relatively complex project structure and configure the Typescript compiler and install type definitions, you have to choose a module and/or build system and rig it all together. </p>
 <p>Angular CLI does a great job in getting you started. Some of it&#39;s features include:</p>
 <ul>
 <li>A webpack-based incremental buildsystem, which will transform your Typescript modules into Javascript and bundle them into a few files which can be minified.</li>
@@ -78,9 +78,10 @@
 </ul>
 <h2 id="what-s-the-problem-">What&#39;s the problem?</h2>
 <p>As you can see Angular CLI does abstract a lot of the complexity away. This also leads to a problem:
-As most of the convenience functions are coupled to the dev-server. Apart from hot module replacement this includes rerouting arbitrary routes back to your index.html so you can use push-API-style URLs. Even worse, Angular CLI is hiding the webpack configuration for some reason I have yet to discover. </p>
-<p>At this point you have two options:</p>
+As most of the convenience functions are coupled to the dev-server. Apart from hot module replacement this includes rerouting arbitrary routes back to your index.html so you can use push-API-style URLs. Even worse, Angular CLI is hiding the webpack configuration for <a href="https://github.com/angular/angular-cli/issues/1656">some reason</a>. </p>
+<p>At this point you have three options:</p>
 <ol>
+<li>Do not use Angular CLI for production.</li>
 <li>Keep your client app seperate from your API and enable <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS">CORS</a>. (This still won&#39;t solve your routing problem in production) </li>
 <li>Read on...</li>
 </ol>
@@ -91,12 +92,261 @@ As most of the convenience functions are coupled to the dev-server. Apart from h
 <li>...handle hot module replacement</li>
 <li>...help us with server-side routing</li>
 </ul>
-<p>SpaService can also do server-side prerendering which is extremely useful e.g. for SEO, but I will save this for a future post.</p>
+<p>SpaService can also do server-side prerendering which is an extremely powerful feature e.g. for SEO, but I will save this for a future post.</p>
+<p>To sum things up with <code>Microsoft.AspNetCore.SpaServices</code> we can make our Asp.Net Core App aware, that it&#39;s hosting a Single-Page-Application and we can persuade it to take over most of the chores the dev-server would have done, like running Webpack and performing HMR.</p>
+<h2 id="prerequisits">Prerequisits</h2>
+<p>I&#39;m asuming you have <a href="http://nodejs.org">Node.js</a>, <a href="http://cli.angular.io">Angular CLI</a> and at least <a href="https://www.microsoft.com/net/core">.Net Core Runtime 1.1 as well as the .Net Core SDK 1.04</a> installed. </p>
+<div class="alert alert-danger" role="alert">
+    <p><strong>Disclaimer</strong></p>
+    <p>
+    For this example I will be using .Net Core SDK 1.04. Core projects used to use a project format called <code>project.json</code>. This has been replaced with an <code>*.csproj</code> format, a couple of releases ago. Despite the familar name, these projects are no longer compatible with Visual Studio 2015. If your are still using VS 2015 you can either upgrade to VS 17, use Visual Studio Code or have a look at the VS-2015-compatible template I have on <a href="https://github.com/mode777/aspnet-angular2">GitHub</a>.
+    </p>
+</div>
 
+<h2 id="step-1-building-the-asp-net-core-app">Step 1: Building the Asp.Net Core App</h2>
+<p>First of we will create a minimal Asp.Net Core WebApi application as a base. Create a new directory for your project, open a shell in it and run <code>dotnet new webapi</code>.</p>
+<p>Next, lets add the needed packages. In the same shell run:</p>
+<pre><code>&gt; dotnet add package Microsoft<span class="hljs-selector-class">.AspNetCore</span><span class="hljs-selector-class">.StaticFiles</span>
+&gt; dotnet add package Microsoft<span class="hljs-selector-class">.AspNetCore</span><span class="hljs-selector-class">.SpaServices</span>
+</code></pre><p>Next you can run <code>dotnet restore</code> to download and install the referenced packages and <code>dotnet run</code> to run your app.</p>
+<p>If you head to <code>http://localhost:5000/api/values</code> you should see some sample JSON-Data, if the application is running correctly.</p>
+<h2 id="step-2-creating-the-angular-app">Step 2: Creating the Angular App</h2>
+<p>Go into another unrelated folder an create a default Angular CLI. Run a shell and run</p>
+<pre><code><span class="hljs-meta">&gt;</span><span class="bash"> ng new my-angular-app`</span>
+<span class="hljs-meta">&gt;</span><span class="bash"> <span class="hljs-built_in">cd</span> my-angular-app</span>
+<span class="hljs-meta">&gt;</span><span class="bash"> <span class="hljs-built_in">cd</span> ng eject</span>
+</code></pre><p>The last command is the most important step in these instructions. As this will make Angular CLI output to <code>webpack.config.js</code> file, we will need to run webpack without the help of angular CLI. Please note that some commands like <code>ng build</code> will no longer work after this.</p>
+<h2 id="step-3-merging-the-projects">Step 3: Merging the projects</h2>
+<p>In this step we will integrate the Angular CLI project structure into our Asp.Net Core project. You don&#39;t have to do it like me. I just thought this was a reasonable approach.</p>
+<p>First rename the folder <code>src</code> to <code>ClientApp</code>. Then copy everything in your Angular App folder to to your Asp.Net Core App folder, so that the .angular-cli.json is in the root of your Asp.Net Core App.</p>
+<p>As we renamed the <code>src</code> folder, some paths need to be adjusted. In .angular-cli.json I adjusted the following paths. Don&#39;t care about the <code>./../Views/Shared/_WebpackTemplate.cshtml</code> yet. We will need it later.</p>
+<pre><code class="lang-js">{
+  ...
+  <span class="hljs-string">"apps"</span>: [
+    {
+      <span class="hljs-string">"root"</span>: <span class="hljs-string">"ClientApp"</span>,
+      <span class="hljs-string">"outDir"</span>: <span class="hljs-string">"wwwroot"</span>,
+      <span class="hljs-string">"index"</span>: <span class="hljs-string">"./../Views/Shared/_WebpackTemplate.cshtml"</span>,
+      ...      
+    }
+  ],
+  ...
+  <span class="hljs-string">"lint"</span>: [
+    {
+      <span class="hljs-string">"project"</span>: <span class="hljs-string">"ClientApp/tsconfig.app.json"</span>
+    },
+    {
+      <span class="hljs-string">"project"</span>: <span class="hljs-string">"ClientApp/tsconfig.spec.json"</span>
+    }
+    ...
+  ],
+  ...
+}
+</code></pre>
+<p>In <code>karma.conf.js</code> we just adjust some paths:</p>
+<pre><code class="lang-js"><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">config</span>) </span>{
+  config.set({
+    ...
+    files: [
+      { <span class="hljs-attr">pattern</span>: <span class="hljs-string">'./ClientApp/test.ts'</span>, <span class="hljs-attr">watched</span>: <span class="hljs-literal">false</span> }
+    ],
+    <span class="hljs-attr">preprocessors</span>: {
+      <span class="hljs-string">'./ClientApp/test.ts'</span>: [<span class="hljs-string">'@angular/cli'</span>]
+    },
+    ...
+  });
+};
+</code></pre>
+<p><code>webpack.config.js</code> can be a bit overwhelming. Make sure to make a backup first. Here we&#39;re mainly adjusting paths again. We also tell the HtmlWebpackPlugin (This plugin will automaticall put your Webpack Chunks in your Html-File) to use a <code>./Views/Shared/_WebpackTemplate.cshtml</code> as a template for the <code>Index.cshtml</code> that will serve as our single page application - more on that later. We&#39;re also telling Webpack to output it&#39;s chunks to <code>wwwroot/dist</code> where Asp.Net Core will serve it&#39;s static files from.</p>
+<pre><code class="lang-js"><span class="hljs-built_in">module</span>.exports = {
+  ...
+  <span class="hljs-string">"entry"</span>: {
+    <span class="hljs-string">"main"</span>: [
+      <span class="hljs-string">"./ClientApp/main.ts"</span>
+    ],
+    <span class="hljs-string">"polyfills"</span>: [
+      <span class="hljs-string">"./ClientApp/polyfills.ts"</span>
+    ],
+    <span class="hljs-string">"styles"</span>: [
+      <span class="hljs-string">"./ClientApp/styles.scss"</span>
+    ]
+  },
+  <span class="hljs-string">"output"</span>: {
+    <span class="hljs-string">"path"</span>: path.join(process.cwd(), <span class="hljs-string">"wwwroot/dist"</span>),
+    ...
+  },
+  <span class="hljs-string">"module"</span>: {
+    <span class="hljs-string">"rules"</span>: [
+      ...
+      {
+        <span class="hljs-string">"include"</span>: [
+          path.join(process.cwd(), <span class="hljs-string">"ClientApp/styles.css"</span>)
+        ]
+        ...
+      }
+      ...
+    ]
+  },
+  <span class="hljs-string">"plugins"</span>: [
+    ...,
+    <span class="hljs-keyword">new</span> GlobCopyWebpackPlugin({
+      <span class="hljs-string">"patterns"</span>: [
+        <span class="hljs-string">"assets"</span>,
+        <span class="hljs-string">"favicon.ico"</span>
+      ],
+      <span class="hljs-string">"globOptions"</span>: {
+        <span class="hljs-string">"cwd"</span>: __dirname + <span class="hljs-string">"/ClientApp"</span>,
+        ...
+      }
+    }),
+    <span class="hljs-keyword">new</span> ProgressPlugin(),
+    <span class="hljs-keyword">new</span> HtmlWebpackPlugin({
+      <span class="hljs-string">"template"</span>: <span class="hljs-string">"./Views/Shared/_WebpackTemplate.cshtml"</span>,
+      <span class="hljs-string">"filename"</span>: <span class="hljs-string">"./../../Views/Home/Index.cshtml"</span>,
+      ...
+    }
+    ...
+    new AotPlugin({
+      ...
+      <span class="hljs-string">"tsConfigPath"</span>: <span class="hljs-string">"ClientApp/tsconfig.app.json"</span>,
+      ...
+    })
+  ],
+  ...
+};
+</code></pre>
+<h3 id="step-4-preparing-our-angular-app-for-asp-net-core">Step 4: Preparing our Angular App for Asp.Net Core</h3>
+<p>In a command shell install these additional packages in npm:</p>
+<pre><code>&gt; npm install --<span class="hljs-built_in">save</span>-<span class="hljs-built_in">dev</span> aspnet-webpack 
+&gt; npm install --<span class="hljs-built_in">save</span>-<span class="hljs-built_in">dev</span> webpack-hot-middleware
+</code></pre><p>To enable hot-module reloading modify your <code>./ClientApp/main.ts</code> to look like this.</p>
+<pre><code class="lang-js"><span class="hljs-keyword">import</span> { enableProdMode } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/core'</span>;
+<span class="hljs-keyword">import</span> { platformBrowserDynamic } <span class="hljs-keyword">from</span> <span class="hljs-string">'@angular/platform-browser-dynamic'</span>;
+
+<span class="hljs-keyword">import</span> { AppModule } <span class="hljs-keyword">from</span> <span class="hljs-string">'./app/app.module'</span>;
+<span class="hljs-keyword">import</span> { environment } <span class="hljs-keyword">from</span> <span class="hljs-string">'./environments/environment'</span>;
+
+<span class="hljs-keyword">if</span> (<span class="hljs-built_in">module</span>[<span class="hljs-string">'hot'</span>]) {
+    <span class="hljs-built_in">module</span>[<span class="hljs-string">'hot'</span>].accept();
+}
+
+<span class="hljs-keyword">if</span> (environment.production) {
+  enableProdMode();
+}
+
+platformBrowserDynamic().bootstrapModule(AppModule);
+</code></pre>
+<h2 id="step-5-preparing-our-asp-net-core-app-for-angular">Step 5: Preparing our Asp.Net Core App for Angular</h2>
+<p>Add the following files to you project. First up is a super simple MVC-Controller that will serve our index.html from every route: <code>./Controllers/Home.cs</code>:</p>
+<pre><code class="lang-csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">HomeController</span> : <span class="hljs-title">Controller</span>
+{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> IActionResult <span class="hljs-title">Index</span>(<span class="hljs-params"></span>)
+    </span>{
+        <span class="hljs-keyword">return</span> View();
+    }
+}
+</code></pre>
+<p>Create an empty <code>./Views/Home</code> folder. And the file <code>./Views/Shared/_WebpackTemplate.cshtml</code> which is just a simple Html5 template:</p>
+<pre><code class="lang-html"><span class="hljs-meta">&lt;!doctype html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">base</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"/"</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"viewport"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"width=device-width, initial-scale=1"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"icon"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"image/x-icon"</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"favicon.ico"</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">app-root</span>&gt;</span>Loading...<span class="hljs-tag">&lt;/<span class="hljs-name">app-root</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
+</code></pre>
+<p>We&#39;re almost done. Last thins we need to do is setup some things in the <code>./Startup.cs</code>:</p>
+<pre><code class="lang-csharp"><span class="hljs-comment">// ...</span>
+<span class="hljs-keyword">using</span> Microsoft.AspNetCore.SpaServices.Webpack;
+<span class="hljs-comment">// ...</span>
+
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Startup</span>
+{
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">readonly</span> IHostingEnvironment _hostingEnvironment;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Startup</span>(<span class="hljs-params">IHostingEnvironment env</span>)
+    </span>{
+        _hostingEnvironment = env;
+
+        <span class="hljs-keyword">var</span> builder = <span class="hljs-keyword">new</span> ConfigurationBuilder()
+            .SetBasePath(env.ContentRootPath)
+            .AddJsonFile(<span class="hljs-string">"appsettings.json"</span>, optional: <span class="hljs-literal">true</span>, reloadOnChange: <span class="hljs-literal">true</span>)
+            .AddJsonFile(<span class="hljs-string">$"appsettings.<span class="hljs-subst">{env.EnvironmentName}</span>.json"</span>, optional: <span class="hljs-literal">true</span>)
+            .AddEnvironmentVariables();
+        Configuration = builder.Build();
+    }
+
+    <span class="hljs-keyword">public</span> IConfigurationRoot Configuration { <span class="hljs-keyword">get</span>; }
+
+    <span class="hljs-comment">// This method gets called by the runtime. Use this method to add services to the container.</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ConfigureServices</span>(<span class="hljs-params">IServiceCollection services</span>)
+    </span>{
+        <span class="hljs-comment">// Add framework services.</span>
+        services.AddMvc();
+    }
+
+    <span class="hljs-comment">// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Configure</span>(<span class="hljs-params">IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory</span>)
+    </span>{
+        <span class="hljs-keyword">if</span> (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+            app.UseWebpackDevMiddleware(<span class="hljs-keyword">new</span> WebpackDevMiddlewareOptions
+            {
+                HotModuleReplacement = <span class="hljs-literal">true</span>
+            });
+        }
+
+        <span class="hljs-comment">//app.UseDefaultFiles();</span>
+        app.UseStaticFiles();
+
+        loggerFactory.AddConsole(Configuration.GetSection(<span class="hljs-string">"Logging"</span>));
+        loggerFactory.AddDebug();
+
+        app.UseMvc(routes =&gt; 
+        {
+            routes.MapRoute(
+                name: <span class="hljs-string">"default"</span>,
+                template: <span class="hljs-string">"api/{controller}/{id?}"</span>);
+
+            routes.MapSpaFallbackRoute(
+                name: <span class="hljs-string">"spa-fallback"</span>,
+                defaults: <span class="hljs-keyword">new</span> { controller = <span class="hljs-string">"Home"</span>, action = <span class="hljs-string">"index"</span> });
+        });
+    }
+}
+</code></pre>
+<p>The important changes take place int the <em>Configure</em> Method. First we enable the Webpack-Dev-Server with Hot-Module-Replacement, then we enable serving static files and lastly we configure a speacial Route, that will always serve our Home/Index view when an unknown route is found, enabling Push-Api-Style routing without the need for <em>#</em>. </p>
+<div class="alert alert-danger" role="alert">
+If you are using Visual Studio, make sure you disable automatic Typescript compilation. Otherwise you might end up compiling your project twice into differen folders. 
+</div>
+
+<h1 id="step-6-run-the-app">Step 6: Run the App</h1>
+<p>No we can start our App to see if everything worked correctly. However, for the Dev-Server to work, we need to run the app in Developement-Mode (that&#39;s how we configured it <code>Startup.cs</code>). Most IDEs will set this environment-variable for you automatically. In the shell you need to do this:
+Windows:</p>
+<pre><code><span class="hljs-meta">&gt;</span><span class="bash"> <span class="hljs-built_in">set</span> ASPNETCORE_ENVIRONMENT=Development</span>
+</code></pre><p>Posix:</p>
+<pre><code><span class="hljs-meta">&gt;</span><span class="bash"> <span class="hljs-built_in">export</span> ASPNETCORE_ENVIRONMENT=Development</span>
+</code></pre><p>Then you can run the App like this:</p>
+<pre><code><span class="hljs-meta">&gt;</span><span class="bash"> dotnet build</span>
+<span class="hljs-meta">&gt;</span><span class="bash"> dotnet run</span>
+</code></pre><p>The cold boot might take several secons for the Webpack build to complete. After this you should see a message like this:</p>
+<pre><code><span class="hljs-meta">&gt;</span><span class="bash"> info: Microsoft.AspNetCore.NodeServices[0]</span>
+<span class="hljs-meta">&gt;</span><span class="bash">       webpack built 3619b488fb8a701fdd0b <span class="hljs-keyword">in</span> 11733ms</span>
+</code></pre>
         </div>
         <div class="col-md-3">
 
             <h6 class="text-uppercase">recent articles</h6>
+            
+            <div><a href="/articles/17-05-angular-asp-net-core.html">Using Angular CLI with ASP.NET Core</a></div>
             
             <div><a href="/articles/17-05-nuget.html">How to quickly turn your csproj into a NuGet package</a></div>
             

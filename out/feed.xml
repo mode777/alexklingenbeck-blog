@@ -7,6 +7,14 @@
 		<atom:link href="http://www.alexklingenbeck.de/feed.xml" rel="self" type="application/rss+xml" />
 			
             <item>
+				<title>Using Angular CLI with ASP.NET Core</title>
+				<description>It is possible to integrate the convenience of Angular CLI into a ASP.NET Core application - find out how!</description>
+				<pubDate> 2017-05-27T22:00:00.000Z </pubDate>
+				<link>http://www.alexklingenbeck.de/articles/17-05-angular-asp-net-core.html</link>
+				<guid isPermaLink="true">http://www.alexklingenbeck.de//articles/17-05-angular-asp-net-core.html</guid>
+			</item>		
+            
+            <item>
 				<title>All good things come in threes</title>
 				<description>Why it took me three tries to create this blog and what I learned on the way</description>
 				<pubDate> 2017-04-29T22:00:00.000Z </pubDate>

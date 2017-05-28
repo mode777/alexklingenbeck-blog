@@ -20,14 +20,14 @@
 
     <url>
       <loc>http://www.alexklingenbeck.de/tags.html</loc>
-      <lastmod>2017-05-21</lastmod>
+      <lastmod>2017-05-28</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.5</priority>
    </url>
 
     <url>
       <loc>http://www.alexklingenbeck.de/archive.html</loc>
-      <lastmod>2017-05-21</lastmod>
+      <lastmod>2017-05-28</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.5</priority>
    </url>
@@ -39,6 +39,13 @@
       <priority>0.1</priority>
    </url>
 
+    
+   <url>
+      <loc>http://www.alexklingenbeck.de/articles/17-05-angular-asp-net-core.html</loc>
+      <lastmod> 2017-05-27 </lastmod>
+      <changefreq>never</changefreq>
+      <priority>0.8</priority>
+   </url>
     
    <url>
       <loc>http://www.alexklingenbeck.de/articles/17-05-blog.html</loc>
