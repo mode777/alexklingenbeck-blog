@@ -8,6 +8,10 @@
     def.date = new Date(2017, 4, 28);
 #}}
 
+<div class="alert alert-info" role="alert">
+      You can find the finished project on <a href="https://github.com/mode777/aspnet-angular2-csproj">GitHub</a>. Feel free to fork!
+</div>
+
 ## Angular CLI
 
 Setting up an Angular app is not a simple task. Appart from creating the relatively complex project structure and configure the Typescript compiler and install type definitions, you have to choose a module and/or build system and rig it all together. 
@@ -40,14 +44,14 @@ SpaService can also do server-side prerendering which is an extremely powerful f
 
 To sum things up with `Microsoft.AspNetCore.SpaServices` we can make our Asp.Net Core App aware, that it's hosting a Single-Page-Application and we can persuade it to take over most of the chores the dev-server would have done, like running Webpack and performing HMR.
 
-## Prerequisits
+## Prerequisites
 
 I'm asuming you have [Node.js](http://nodejs.org), [Angular CLI](http://cli.angular.io) and at least [.Net Core Runtime 1.1 as well as the .Net Core SDK 1.04](https://www.microsoft.com/net/core) installed. 
 
 <div class="alert alert-danger" role="alert">
     <p><strong>Disclaimer</strong></p>
     <p>
-    For this example I will be using .Net Core SDK 1.04. Core projects used to use a project format called <code>project.json</code>. This has been replaced with an `*.csproj` format, a couple of releases ago. Despite the familar name, these projects are no longer compatible with Visual Studio 2015. If your are still using VS 2015 you can either upgrade to VS 17, use Visual Studio Code or have a look at the VS-2015-compatible template I have on <a href="https://github.com/mode777/aspnet-angular2">GitHub</a>.
+    For this example I will be using .Net Core SDK 1.04. .Net Core projects used to have a project format called <code>project.json</code>. This has been replaced with the new `*.csproj` format a couple of releases ago. Despite the familar name, these projects are no longer compatible with Visual Studio 2015. If your are still using VS 2015, you can either upgrade to VS 17, use Visual Studio Code or have a look at the VS-2015-compatible template, I have on <a href="https://github.com/mode777/aspnet-angular2">GitHub</a>.
     </p>
 </div>
 
@@ -123,6 +127,18 @@ module.exports = function (config) {
     ...
   });
 };
+```
+
+In `protractor.conf.js` we need to change the port of the application. In Asp.Net Core, the default is 5000.
+```
+...
+
+exports.config = {
+  ...
+  baseUrl: 'http://localhost:5000/',
+  ...
+};
+
 ```
 
 `webpack.config.js` can be a bit overwhelming. Make sure to make a backup first. Here we're mainly adjusting paths again. We also tell the HtmlWebpackPlugin (This plugin will automaticall put your Webpack Chunks in your Html-File) to use a `./Views/Shared/_WebpackTemplate.cshtml` as a template for the `Index.cshtml` that will serve as our single page application - more on that later. We're also telling Webpack to output it's chunks to `wwwroot/dist` where Asp.Net Core will serve it's static files from.
@@ -314,7 +330,7 @@ The important changes take place in the _Configure_ Method. First we enable the 
 If you are using Visual Studio, make sure you disable automatic Typescript compilation. Otherwise you might end up compiling your project twice into different folders. 
 </div>
 
-# Step 6: Run the App
+## Step 6: Run the App
 
 No we can start our App to see if everything worked correctly. However, for the Dev-Server to work, we need to run the app in Developement-Mode (that's how we configured it `Startup.cs`). Most IDEs will set this environment-variable for you automatically. In the shell you need to do this:
 Windows...
@@ -332,8 +348,18 @@ Then you can run the App like this:
 > dotnet run
 ```
 
-The cold boot might take several secons for the Webpack build to complete. After this you should see a message like this:
+The cold boot might take several seconds for the Webpack build to complete. After this you should see a message like this:
 ```
 > info: Microsoft.AspNetCore.NodeServices[0]
 >       webpack built 3619b488fb8a701fdd0b in 11733ms
 ```
+
+Got to `http://localhost:5000` and you should see the message "app works!" from the Angular CLI template. 
+
+### Some things to try
+
+Almost all features of Angular CLI should still work. For example you could...
+
+* ...modify the "app works!" string in `./ClientApp/app/app.component.ts` while the app is running to see HMR in action.
+* ...scaffold a component by running `ng g component my-component`.
+* ...run end-to-end tests with protractor by running `npm run e2e` while the app is running.

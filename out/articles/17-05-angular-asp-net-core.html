@@ -67,7 +67,11 @@
 <div class="container">
     <div class="row">
         <div class="col-md-9">
-        <h2 id="angular-cli">Angular CLI</h2>
+        <div class="alert alert-info" role="alert">
+      You can find the finished project on <a href="https://github.com/mode777/aspnet-angular2-csproj">GitHub</a>. Feel free to fork!
+</div>
+
+<h2 id="angular-cli">Angular CLI</h2>
 <p>Setting up an Angular app is not a simple task. Appart from creating the relatively complex project structure and configure the Typescript compiler and install type definitions, you have to choose a module and/or build system and rig it all together. </p>
 <p>Angular CLI does a great job in getting you started. Some of it&#39;s features include:</p>
 <ul>
@@ -94,12 +98,12 @@ As most of the convenience functions are coupled to the dev-server. Apart from h
 </ul>
 <p>SpaService can also do server-side prerendering which is an extremely powerful feature e.g. for SEO, but I will save this for a future post.</p>
 <p>To sum things up with <code>Microsoft.AspNetCore.SpaServices</code> we can make our Asp.Net Core App aware, that it&#39;s hosting a Single-Page-Application and we can persuade it to take over most of the chores the dev-server would have done, like running Webpack and performing HMR.</p>
-<h2 id="prerequisits">Prerequisits</h2>
+<h2 id="prerequisites">Prerequisites</h2>
 <p>I&#39;m asuming you have <a href="http://nodejs.org">Node.js</a>, <a href="http://cli.angular.io">Angular CLI</a> and at least <a href="https://www.microsoft.com/net/core">.Net Core Runtime 1.1 as well as the .Net Core SDK 1.04</a> installed. </p>
 <div class="alert alert-danger" role="alert">
     <p><strong>Disclaimer</strong></p>
     <p>
-    For this example I will be using .Net Core SDK 1.04. Core projects used to use a project format called <code>project.json</code>. This has been replaced with an <code>*.csproj</code> format, a couple of releases ago. Despite the familar name, these projects are no longer compatible with Visual Studio 2015. If your are still using VS 2015 you can either upgrade to VS 17, use Visual Studio Code or have a look at the VS-2015-compatible template I have on <a href="https://github.com/mode777/aspnet-angular2">GitHub</a>.
+    For this example I will be using .Net Core SDK 1.04. .Net Core projects used to have a project format called <code>project.json</code>. This has been replaced with the new <code>*.csproj</code> format a couple of releases ago. Despite the familar name, these projects are no longer compatible with Visual Studio 2015. If your are still using VS 2015, you can either upgrade to VS 17, use Visual Studio Code or have a look at the VS-2015-compatible template, I have on <a href="https://github.com/mode777/aspnet-angular2">GitHub</a>.
     </p>
 </div>
 
@@ -157,7 +161,15 @@ As most of the convenience functions are coupled to the dev-server. Apart from h
   });
 };
 </code></pre>
-<p><code>webpack.config.js</code> can be a bit overwhelming. Make sure to make a backup first. Here we&#39;re mainly adjusting paths again. We also tell the HtmlWebpackPlugin (This plugin will automaticall put your Webpack Chunks in your Html-File) to use a <code>./Views/Shared/_WebpackTemplate.cshtml</code> as a template for the <code>Index.cshtml</code> that will serve as our single page application - more on that later. We&#39;re also telling Webpack to output it&#39;s chunks to <code>wwwroot/dist</code> where Asp.Net Core will serve it&#39;s static files from.</p>
+<p>In <code>protractor.conf.js</code> we need to change the port of the application. In Asp.Net Core, the default is 5000.</p>
+<pre><code>...
+
+exports.config = {
+  ...
+  baseUrl: <span class="hljs-string">'http://localhost:5000/'</span>,
+  ...
+};
+</code></pre><p><code>webpack.config.js</code> can be a bit overwhelming. Make sure to make a backup first. Here we&#39;re mainly adjusting paths again. We also tell the HtmlWebpackPlugin (This plugin will automaticall put your Webpack Chunks in your Html-File) to use a <code>./Views/Shared/_WebpackTemplate.cshtml</code> as a template for the <code>Index.cshtml</code> that will serve as our single page application - more on that later. We&#39;re also telling Webpack to output it&#39;s chunks to <code>wwwroot/dist</code> where Asp.Net Core will serve it&#39;s static files from.</p>
 <pre><code class="lang-js"><span class="hljs-built_in">module</span>.exports = {
   ...
   <span class="hljs-string">"entry"</span>: {
@@ -262,7 +274,7 @@ platformBrowserDynamic().bootstrapModule(AppModule);
 <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
 </code></pre>
-<p>We&#39;re almost done. Last thins we need to do is setup some things in the <code>./Startup.cs</code>:</p>
+<p>We&#39;re almost done. Last thing we need to do is setup some things in the <code>./Startup.cs</code>:</p>
 <pre><code class="lang-csharp"><span class="hljs-comment">// ...</span>
 <span class="hljs-keyword">using</span> Microsoft.AspNetCore.SpaServices.Webpack;
 <span class="hljs-comment">// ...</span>
@@ -323,24 +335,32 @@ platformBrowserDynamic().bootstrapModule(AppModule);
     }
 }
 </code></pre>
-<p>The important changes take place int the <em>Configure</em> Method. First we enable the Webpack-Dev-Server with Hot-Module-Replacement, then we enable serving static files and lastly we configure a speacial Route, that will always serve our Home/Index view when an unknown route is found, enabling Push-Api-Style routing without the need for <em>#</em>. </p>
+<p>The important changes take place in the <em>Configure</em> Method. First we enable the Webpack-Dev-Server with Hot-Module-Replacement, then we enable serving static files and lastly we configure a speacial Route, that will always serve our Home/Index view when an unknown route is found, enabling Push-Api-Style routing without the need for <em>#</em>. </p>
 <div class="alert alert-danger" role="alert">
-If you are using Visual Studio, make sure you disable automatic Typescript compilation. Otherwise you might end up compiling your project twice into differen folders. 
+If you are using Visual Studio, make sure you disable automatic Typescript compilation. Otherwise you might end up compiling your project twice into different folders. 
 </div>
 
-<h1 id="step-6-run-the-app">Step 6: Run the App</h1>
+<h2 id="step-6-run-the-app">Step 6: Run the App</h2>
 <p>No we can start our App to see if everything worked correctly. However, for the Dev-Server to work, we need to run the app in Developement-Mode (that&#39;s how we configured it <code>Startup.cs</code>). Most IDEs will set this environment-variable for you automatically. In the shell you need to do this:
-Windows:</p>
+Windows...</p>
 <pre><code><span class="hljs-meta">&gt;</span><span class="bash"> <span class="hljs-built_in">set</span> ASPNETCORE_ENVIRONMENT=Development</span>
-</code></pre><p>Posix:</p>
+</code></pre><p>..or an *nix environment:</p>
 <pre><code><span class="hljs-meta">&gt;</span><span class="bash"> <span class="hljs-built_in">export</span> ASPNETCORE_ENVIRONMENT=Development</span>
 </code></pre><p>Then you can run the App like this:</p>
 <pre><code><span class="hljs-meta">&gt;</span><span class="bash"> dotnet build</span>
 <span class="hljs-meta">&gt;</span><span class="bash"> dotnet run</span>
-</code></pre><p>The cold boot might take several secons for the Webpack build to complete. After this you should see a message like this:</p>
+</code></pre><p>The cold boot might take several seconds for the Webpack build to complete. After this you should see a message like this:</p>
 <pre><code><span class="hljs-meta">&gt;</span><span class="bash"> info: Microsoft.AspNetCore.NodeServices[0]</span>
 <span class="hljs-meta">&gt;</span><span class="bash">       webpack built 3619b488fb8a701fdd0b <span class="hljs-keyword">in</span> 11733ms</span>
-</code></pre>
+</code></pre><p>Got to <code>http://localhost:5000</code> and you should see the message &quot;app works!&quot; from the Angular CLI template. </p>
+<h3 id="some-things-to-try">Some things to try</h3>
+<p>Almost all features of Angular CLI should still work. For example you could...</p>
+<ul>
+<li>...modify the &quot;app works!&quot; string in <code>./ClientApp/app/app.component.ts</code> while the app is running to see HMR in action.</li>
+<li>...scaffold a component by running <code>ng g component my-component</code>.</li>
+<li>...run end-to-end tests with protractor by running <code>npm run e2e</code> while the app is running.</li>
+</ul>
+
         </div>
         <div class="col-md-3">
 
@@ -363,6 +383,7 @@ Windows:</p>
             <div><a href="https://github.com/mode777">GitHub</a></div>
             <div><a href="https://www.linkedin.com/in/alexander-klingenbeck-b51100141/">LinkedIn</a></div>
             <div><a href="https://www.xing.com/profile/Alexander_Klingenbeck2/cv">Xing</a></div>
+            <div><a href="https://twitter.com/KlingenbeckAlex">Twitter</a></div>
         </div>
     </div>
 </div>
@@ -380,7 +401,7 @@ Windows:</p>
     (function() { 
         var d = document, s = d.createElement('script');
         
-        s.src = 'http://alexklingenbeck.disqus.com/embed.js';
+        s.src = 'https://alexklingenbeck.disqus.com/embed.js';
         
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
