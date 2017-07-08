@@ -38,5 +38,13 @@
 				<guid isPermaLink="true">http://www.alexklingenbeck.de//articles/17-05-nuget.html</guid>
 			</item>		
             
+            <item>
+				<title>Use DocFx to document your existing .Net application</title>
+				<description>DocFx can build static html documentation pages from your .Net aplication.</description>
+				<pubDate> 2017-06-09T22:00:00.000Z </pubDate>
+				<link>http://www.alexklingenbeck.de/articles/17-06-docfx.html</link>
+				<guid isPermaLink="true">http://www.alexklingenbeck.de//articles/17-06-docfx.html</guid>
+			</item>		
+            
 	</channel>
 </rss>

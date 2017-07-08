@@ -1,0 +1,220 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Use DocFx to document your existing .Net application - alexklingenbeck.de</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+         <meta name="description=" content="DocFx can build static html documentation pages from your .Net aplication.">
+        <link rel="stylesheet" href="/assets/bootstrap.css">
+        <link rel="stylesheet" href="/assets/octicons.min.css">
+        <link rel="stylesheet" href="/assets/highlight/agate.css">
+        <link rel="stylesheet" href="/assets/styles.css">
+    </head>
+    <body>
+        <div class="container">
+            <nav class="navbar navbar-toggleable-md navbar-light">
+                <button class="navbar-toggler navbar-toggler-right collapsed" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <span class="navbar-brand" href="#">
+                        <svg width="30" height="30" class="octicon text-success" aria-hidden="true"><use xlink:href="/assets/sprite.octicons.svg#gist" /></svg>
+                        alexklingenbeck.de
+                    </span>
+                <div class="navbar-collapse collapse" id="navbarCollapse" aria-expanded="false">
+                    <div class="navbar-nav mr-auto">
+                        
+                            <a class="nav-item nav-link " href="/index.html">Home</a>
+                        
+                            <a class="nav-item nav-link active" href="/articles/17-06-docfx.html">Blog</a>
+                        
+                            <a class="nav-item nav-link " href="/about.html">About</a>
+                        
+                        
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <div>
+
+
+
+<div class="jumbotron bg-primary">
+    <div class="container">
+        <div class="row">
+            <div class="col col-md-9">
+                <h1 class="display-4">Use DocFx to document your existing .Net application</h1>
+                <p class="lead">
+                <p class="lead" style="margin-bottom:5px;">DocFx can build static html documentation pages from your .Net aplication.</p>
+                <span class="article-date"><em>2017-06-09</em></span>
+                
+                <span>
+                    <a href="/tags.html">Tags:</a>
+                    
+                    <a href="/tags.html#.net" class="badge badge-success">.net</a>
+                    
+                </span>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+        <h1 id="motivation">Motivation</h1>
+<p>Like most .NET developers, spoiled by C#, I&#39;m not particulary fond of Java. What I always liked about it however, was how easy it is to create HTML documentation from your code comments. I was looking for C# alternatives for a while but none of the solutions seemed quite satisfying. Sandcastle in conjunction witch the Sandcastle Helpfile Builder did actually do quite a decent job, but it required extensive setup, a huge download and the export options seemed a little limited (A Webforms website or a Chm-file - no thanks!). My Sandcastle setup also was far removed from the one-step-build solution I was looking for.</p>
+<p>A few days ago I came by DocFx and it seemed like the tool I was always looking for. It&#39;s not perfect (yet?) but I think it deserves more attention.</p>
+<h1 id="docfx">DocFx</h1>
+<p><a href="https://dotnet.github.io/docfx/index.html">DocFx</a> is a Microsoft developed documentation tool. It is open source and you can find it on <a href="https://github.com/dotnet/docfx">GitHub</a>.
+DocFx seems to take a kind of hybrid approach between a documentation tool and a static page generator like <a href="http://jekyllrb.com">Jekyll</a>. 
+This way you can combine your code-comment documentation with markdown pages using a dialect of Github-Flavoured-Markdown called DocFx-Flavoured-Markdown (DFM). Reading the docs, the project structure seems to imply that it&#39;s meant for .Net-Core projects. However, this isn&#39;t the case. DocFx comes as a command-line tool as well as a Visual Studio 2017 plugin. In this post I will only cover the command line.</p>
+<h1 id="integration-it-into-an-exisiting-project">Integration it into an exisiting project</h1>
+<p>To get you started I will quickly walk you through the process of integrating DocFx into an exisitng project. Here is the project structure which is kind of typical for pre-net.core projects:</p>
+<pre><code>Project
++ Core
+  -<span class="ruby"> ...
+</span>  -<span class="ruby"> Core.csproj
+</span>+ Data
+  -<span class="ruby"> ...
+</span>  -<span class="ruby"> Repository.cs
+</span>  -<span class="ruby"> Data.csproj
+</span>+ Tests
+  -<span class="ruby"> ...
+</span>  -<span class="ruby"> Test.csproj
+</span>-<span class="ruby"> Project.sln</span>
+</code></pre><p>Here&#39;s an example class <code>Repository.cs</code>, where I put some XML-Comments</p>
+<pre><code class="lang-cs"><span class="hljs-keyword">using</span> System;
+
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">Data</span>
+{
+    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span>
+    <span class="hljs-comment"><span class="hljs-doctag">///</span> </span>
+    <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Repository</span>
+    {
+        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span>
+        <span class="hljs-comment"><span class="hljs-doctag">///</span> Creates an instance</span>
+        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span>
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Repository</span>(<span class="hljs-params"></span>)
+        </span>{
+
+        }
+
+        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span>
+        <span class="hljs-comment"><span class="hljs-doctag">///</span> Greets someone</span>
+        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span>
+        <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name="name"&gt;</span>Name of the person to greet<span class="hljs-doctag">&lt;/param&gt;</span></span>
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Greet</span>(<span class="hljs-params"><span class="hljs-keyword">string</span> name</span>)
+        </span>{
+            Console.WriteLine(<span class="hljs-string">$"Hello <span class="hljs-subst">{name}</span>!"</span>);
+        }
+    }
+}
+</code></pre>
+<h2 id="installation-of-docfx">Installation of DocFx</h2>
+<p>There are several ways of installation described in the <a href="http://dotnet.github.io/docfx/tutorial/docfx_getting_started.html#2-use-docfx-exe-directly">docs</a>. For the rest of this article I will assume, you have installed the DocFx command-line-tool somewhere in your PATH so you can use the <code>docfx</code> command from arbitrary locations.</p>
+<h2 id="create-a-documentation-project">Create a documentation project</h2>
+<p>The default project setup of DocFx want&#39;s you to put your source-files in the <code>src</code> subfolder of your DocFx project. Personally I don&#39;t like this, so we will create the DocFx in our Project root folder (<code>Project</code>) and customize the <code>docfx.json</code> a little bit.</p>
+<p>Open a command shell. Then run <code>docfx init --output Documentation</code> to create a new project in the new <code>Documentation</code> folder. DocFx will ask a bunch of question - just hit enter a few times to accept the defaults or use the <code>--quiet</code> option.</p>
+<p>Now go in the newly created <code>Documentation</code> folder we need to slightly edit the <code>docfx.json</code> to make it do the following things:</p>
+<ul>
+<li>Use the main Project folder (<code>./..</code>) as root for source files.</li>
+<li>Use all folders to look for source files.</li>
+<li>Ignore our Test project.</li>
+</ul>
+<p>Here are all the changes I made to <code>docfx.json</code>. Note the addition of the second <code>src</code> parameter in metadata which sets the root to one folder above the current (<code>..</code>)</p>
+<pre><code class="lang-js">{
+  <span class="hljs-string">"metadata"</span>: [
+    {
+      <span class="hljs-string">"src"</span>: [
+        {
+          <span class="hljs-string">"files"</span>: [
+            <span class="hljs-string">"**/**.csproj"</span>
+          ],
+          <span class="hljs-string">"exclude"</span>: [
+            ...
+            <span class="hljs-string">"**/Test.csproj"</span>
+          ],
+          <span class="hljs-string">"src"</span>: <span class="hljs-string">".."</span>
+        }
+      ],
+      <span class="hljs-string">"dest"</span>: <span class="hljs-string">"api"</span>
+    }
+  ],
+  <span class="hljs-string">"build"</span>: {
+    ...
+  }
+}
+</code></pre>
+<h2 id="building-the-documentation">Building the documentation</h2>
+<p>Now open a command-shell in the <code>Documentation</code> folder and run <code>docfx --serve</code> to build the website and serve it from a dev-server.
+If you head to <code>http://localhost:8080</code> you should see the generated website and if you click on <strong>Api Documentation</strong> you should see the generated documentation.</p>
+<p>Our example class, for example, will look like this:
+ <img src="/assets/17-06-docfx.png" alt="Generated documentation"></p>
+<h1 id="next-steps">Next steps</h1>
+<p>I hope this short introduction will get you started with creating your own documentation. Next, you could try to change the default markdown files <code>Documentation/index.md</code>, <code>Documentation/articles/intro.md</code> or <code>Documentation/api/index.md</code>. Of course you could also add more articles there yourself or use another theme.</p>
+
+        </div>
+        <div class="col-md-3">
+
+            <h6 class="text-uppercase">recent articles</h6>
+            
+            <div><a href="/articles/17-06-docfx.html">Use DocFx to document your existing .Net application</a></div>
+            
+            <div><a href="/articles/17-05-angular-asp-net-core.html">Using Angular CLI with ASP.NET Core</a></div>
+            
+            <div><a href="/articles/17-05-nuget.html">How to quickly turn your csproj into a NuGet package</a></div>
+            
+            <div><a href="/articles/17-05-cli-nodejs.html">Building Command-Line-Interfaces with Node.js</a></div>
+            
+            <div><a href="/articles/17-05-blog.html">All good things come in threes</a></div>
+            
+            <div><a href="/archive.html"><b>Archive</b></a></div>
+            
+
+            <h6 class="text-uppercase">meta</h6>
+            <div><a href="http://www.alexklingenbeck.de/feed.xml">Entries RSS</a></div>
+            <div><a href="http://stackoverflow.com/users/4361832/mode777?tab=profile">Stack Overflow</a></div>
+            <div><a href="https://github.com/mode777">GitHub</a></div>
+            <div><a href="https://www.linkedin.com/in/alexander-klingenbeck-b51100141/">LinkedIn</a></div>
+            <div><a href="https://www.xing.com/profile/Alexander_Klingenbeck2/cv">Xing</a></div>
+            <div><a href="https://twitter.com/KlingenbeckAlex">Twitter</a></div>
+        </div>
+    </div>
+</div>
+</div>
+
+        <footer class="bg-faded text-muted">
+            <div class="container">
+                
+                <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+        this.page.identifier = "17-06-typescript";
+    };
+    
+    (function() { 
+        var d = document, s = d.createElement('script');
+        
+        s.src = 'https://alexklingenbeck.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+                <hr>
+                
+                <div style="text-align:right;"><a href="/impress.html">Impressum</a> - Copyright (c) 2017 Alexander Klingenbeck - made with <a href="https://github.com/mode777/page-gen">page-gen</a></div>       
+            </div>
+        </footer>
+
+        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    </body>
+</html>
