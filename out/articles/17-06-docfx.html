@@ -27,7 +27,7 @@
                         
                             <a class="nav-item nav-link " href="/index.html">Home</a>
                         
-                            <a class="nav-item nav-link active" href="/articles/17-06-docfx.html">Blog</a>
+                            <a class="nav-item nav-link active" href="/23-01-async.html">Blog</a>
                         
                             <a class="nav-item nav-link " href="/about.html">About</a>
                         
@@ -75,17 +75,17 @@ This way you can combine your code-comment documentation with markdown pages usi
 <h1 id="integration-it-into-an-exisiting-project">Integration it into an exisiting project</h1>
 <p>To get you started I will quickly walk you through the process of integrating DocFx into an exisitng project. Here is the project structure which is kind of typical for pre-net.core projects:</p>
 <pre><code>Project
-+ Core
-  -<span class="ruby"> ...
-</span>  -<span class="ruby"> Core.csproj
-</span>+ Data
-  -<span class="ruby"> ...
-</span>  -<span class="ruby"> Repository.cs
-</span>  -<span class="ruby"> Data.csproj
-</span>+ Tests
-  -<span class="ruby"> ...
-</span>  -<span class="ruby"> Test.csproj
-</span>-<span class="ruby"> Project.sln</span>
+<span class="hljs-bullet">+ </span>Core
+<span class="hljs-bullet">  - </span>...
+<span class="hljs-bullet">  - </span>Core.csproj
+<span class="hljs-bullet">+ </span>Data
+<span class="hljs-bullet">  - </span>...
+<span class="hljs-bullet">  - </span>Repository.cs
+<span class="hljs-bullet">  - </span>Data.csproj
+<span class="hljs-bullet">+ </span>Tests
+<span class="hljs-bullet">  - </span>...
+<span class="hljs-bullet">  - </span>Test.csproj
+<span class="hljs-bullet">- </span>Project.sln
 </code></pre><p>Here&#39;s an example class <code>Repository.cs</code>, where I put some XML-Comments</p>
 <pre><code class="lang-cs"><span class="hljs-keyword">using</span> System;
 
@@ -99,8 +99,8 @@ This way you can combine your code-comment documentation with markdown pages usi
         <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;summary&gt;</span></span>
         <span class="hljs-comment"><span class="hljs-doctag">///</span> Creates an instance</span>
         <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span>
-        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Repository</span>(<span class="hljs-params"></span>)
-        </span>{
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Repository</span>(<span class="hljs-params"></span>)</span>
+        {
 
         }
 
@@ -108,12 +108,13 @@ This way you can combine your code-comment documentation with markdown pages usi
         <span class="hljs-comment"><span class="hljs-doctag">///</span> Greets someone</span>
         <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;/summary&gt;</span></span>
         <span class="hljs-comment"><span class="hljs-doctag">///</span> <span class="hljs-doctag">&lt;param name="name"&gt;</span>Name of the person to greet<span class="hljs-doctag">&lt;/param&gt;</span></span>
-        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Greet</span>(<span class="hljs-params"><span class="hljs-keyword">string</span> name</span>)
-        </span>{
+        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Greet</span>(<span class="hljs-params"><span class="hljs-keyword">string</span> name</span>)</span>
+        {
             Console.WriteLine(<span class="hljs-string">$"Hello <span class="hljs-subst">{name}</span>!"</span>);
         }
     }
 }
+
 </code></pre>
 <h2 id="installation-of-docfx">Installation of DocFx</h2>
 <p>There are several ways of installation described in the <a href="http://dotnet.github.io/docfx/tutorial/docfx_getting_started.html#2-use-docfx-exe-directly">docs</a>. For the rest of this article I will assume, you have installed the DocFx command-line-tool somewhere in your PATH so you can use the <code>docfx</code> command from arbitrary locations.</p>
@@ -163,6 +164,8 @@ If you head to <code>http://localhost:8080</code> you should see the generated w
 
             <h6 class="text-uppercase">recent articles</h6>
             
+            <div><a href="/23-01-async.html">Angular async pipe pitfalls</a></div>
+            
             <div><a href="/articles/17-06-docfx.html">Use DocFx to document your existing .Net application</a></div>
             
             <div><a href="/articles/17-05-angular-asp-net-core.html">Using Angular CLI with ASP.NET Core</a></div>
@@ -170,8 +173,6 @@ If you head to <code>http://localhost:8080</code> you should see the generated w
             <div><a href="/articles/17-05-nuget.html">How to quickly turn your csproj into a NuGet package</a></div>
             
             <div><a href="/articles/17-05-cli-nodejs.html">Building Command-Line-Interfaces with Node.js</a></div>
-            
-            <div><a href="/articles/17-05-blog.html">All good things come in threes</a></div>
             
             <div><a href="/archive.html"><b>Archive</b></a></div>
             
@@ -194,7 +195,7 @@ If you head to <code>http://localhost:8080</code> you should see the generated w
                 <div id="disqus_thread"></div>
 <script>
     var disqus_config = function () {
-        this.page.identifier = "17-06-typescript";
+        this.page.identifier = "17-06-docfx";
     };
     
     (function() { 
@@ -209,7 +210,7 @@ If you head to <code>http://localhost:8080</code> you should see the generated w
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
                 <hr>
                 
-                <div style="text-align:right;"><a href="/impress.html">Impressum</a> - Copyright (c) 2017 Alexander Klingenbeck - made with <a href="https://github.com/mode777/page-gen">page-gen</a></div>       
+                <div style="text-align:right;"><a href="/impress.html">Impressum</a> - Copyright (c) 2024 Alexander Klingenbeck - made with <a href="https://github.com/mode777/page-gen">page-gen</a></div>       
             </div>
         </footer>
 

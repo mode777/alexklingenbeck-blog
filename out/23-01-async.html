@@ -3,10 +3,10 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Getting started with page-gen - alexklingenbeck.de</title>
+        <title>Angular async pipe pitfalls - alexklingenbeck.de</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-         <meta name="description=" content="A simple static website generator">
+         <meta name="description=" content="The async pipe is one of my favourite features in Angular, but I recently came across some pitfalls with change detection, which I wanted to share...">
         <link rel="stylesheet" href="/assets/bootstrap.css">
         <link rel="stylesheet" href="/assets/octicons.min.css">
         <link rel="stylesheet" href="/assets/highlight/agate.css">
@@ -27,7 +27,7 @@
                         
                             <a class="nav-item nav-link " href="/index.html">Home</a>
                         
-                            <a class="nav-item nav-link " href="/23-01-async.html">Blog</a>
+                            <a class="nav-item nav-link active" href="/23-01-async.html">Blog</a>
                         
                             <a class="nav-item nav-link " href="/about.html">About</a>
                         
@@ -45,15 +45,15 @@
     <div class="container">
         <div class="row">
             <div class="col col-md-9">
-                <h1 class="display-4">Getting started with page-gen</h1>
+                <h1 class="display-4">Angular async pipe pitfalls</h1>
                 <p class="lead">
-                <p class="lead" style="margin-bottom:5px;">A simple static website generator</p>
-                
+                <p class="lead" style="margin-bottom:5px;">The async pipe is one of my favourite features in Angular, but I recently came across some pitfalls with change detection, which I wanted to share...</p>
+                <span class="article-date"><em>2023-02-07</em></span>
                 
                 <span>
                     <a href="/tags.html">Tags:</a>
                     
-                    <a href="/tags.html#nodejs" class="badge badge-success">nodejs</a>
+                    <a href="/tags.html#angular" class="badge badge-success">angular</a>
                     
                 </span>
                 
@@ -65,7 +65,15 @@
 <div class="container">
     <div class="row">
         <div class="col-md-9">
-        <p>Page-gen lets you run <a href="http://olado.github.io/doT/index.html">DoT.js</a> templates in html and markup templates. I initially wrote it to generate this blog although it can be leveraged for any website that does not need dynamic content. It doesn&#39;t even remotely hat the power nor convenience of <a href="http://jekyllrb.com">Jekyll</a> or <a href="http://hexo.io">Hexo</a> but it&#39;s very easy to get going and yet very powerfull, as it basically just lets you write Javascript inside your pages and layouts. </p>
+        <p><a href="https://blog.angular-university.io/how-does-angular-2-change-detection-really-work/">https://blog.angular-university.io/how-does-angular-2-change-detection-really-work/</a></p>
+<p>Before we start let&#39;s do a quick refresh about how the async pipe and angular change detection works..</p>
+<h1 id="angular-change-detection">Angular change detection</h1>
+<blockquote>
+<p><strong>NOTE:</strong> Using the async pipe in combination with Observables can help you get rid of the default (=&quot;automatic&quot;) change detection completely and switch to <code>OnPush</code>. This will not only make it more transparent when your change detection runs but <a href="https://angular.io/guide/change-detection">also will make your app faster</a>.</p>
+</blockquote>
+<p>Let&#39;s start with the offending code...</p>
+<h1 id="the-code">The code</h1>
+<p>First of all let me just </p>
 
         </div>
         <div class="col-md-3">
@@ -103,7 +111,7 @@
                 <div id="disqus_thread"></div>
 <script>
     var disqus_config = function () {
-        this.page.identifier = "17-04-page-gen";
+        this.page.identifier = "23-01-async";
     };
     
     (function() { 

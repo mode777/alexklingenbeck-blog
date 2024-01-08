@@ -3,10 +3,10 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Getting started with page-gen - alexklingenbeck.de</title>
+        <title>Which WebGL library to choose? - alexklingenbeck.de</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-         <meta name="description=" content="A simple static website generator">
+         <meta name="description=" content="Different WebGL libraries offer very different levels of abstractions. Which one is right for you?">
         <link rel="stylesheet" href="/assets/bootstrap.css">
         <link rel="stylesheet" href="/assets/octicons.min.css">
         <link rel="stylesheet" href="/assets/highlight/agate.css">
@@ -45,15 +45,15 @@
     <div class="container">
         <div class="row">
             <div class="col col-md-9">
-                <h1 class="display-4">Getting started with page-gen</h1>
+                <h1 class="display-4">Which WebGL library to choose?</h1>
                 <p class="lead">
-                <p class="lead" style="margin-bottom:5px;">A simple static website generator</p>
+                <p class="lead" style="margin-bottom:5px;">Different WebGL libraries offer very different levels of abstractions. Which one is right for you?</p>
                 
                 
                 <span>
                     <a href="/tags.html">Tags:</a>
                     
-                    <a href="/tags.html#nodejs" class="badge badge-success">nodejs</a>
+                    <a href="/tags.html#webgl" class="badge badge-success">webgl</a>
                     
                 </span>
                 
@@ -65,7 +65,27 @@
 <div class="container">
     <div class="row">
         <div class="col-md-9">
-        <p>Page-gen lets you run <a href="http://olado.github.io/doT/index.html">DoT.js</a> templates in html and markup templates. I initially wrote it to generate this blog although it can be leveraged for any website that does not need dynamic content. It doesn&#39;t even remotely hat the power nor convenience of <a href="http://jekyllrb.com">Jekyll</a> or <a href="http://hexo.io">Hexo</a> but it&#39;s very easy to get going and yet very powerfull, as it basically just lets you write Javascript inside your pages and layouts. </p>
+        <p>Over the last six months I&#39;ve used several libraries with WebGL. I&#39;m therefore in no way an expert on Opengl ES2, WebGL or any of the library presented here. However, I think I&#39;ve used them enough to be able to give you a quick overview, which tool is suitable for which job.</p>
+<p>I will start with (almost) barebones WebGL and gradually move up to more convenient and beefy library.</p>
+<h1 id="bare-metal-webgl-with-only-glmatrix">Bare metal WebGL with only GLMatrix</h1>
+<h2 id="example">Example</h2>
+<h3 id="formats">Formats</h3>
+<p>Only what you write yourself (or get a library)</p>
+<h2 id="features">Features</h2>
+<ul>
+<li>Payload (minified): </li>
+</ul>
+<h2 id="when-to-use-it-">When to use it?</h2>
+<p>Main reason: To learn OpenGL ES2. Using pure WebGL is a great way of getting into modern OpenGL, especially when you don&#39;t have the C/C++ or Mobile background. The syntax is very similar to real OpenGL but you don&#39;t have to worry about pointers, loading image formats or setting up a host for the GL context. It also gives you a friendly environment to experiment with shaders.</p>
+<p>There is very little reason to use pure WebGL outside of this unless you really know what you&#39;re doing and want to write your own WebGL library (and even then you might be better of with contributing to one of the other libraries presented here).</p>
+<h1 id="twgl-js">TWGL.js</h1>
+<p>TWGL is just syntactic suger for writing bare metal WebGL, with a few convenience methods sprinkled in. The abstraction seem very well thought about and you still feel that you have total control over all WebGL features. And even if a particular feature is missing, it is always possible to mix and match with vanilla WebGL</p>
+<h2 id="when-to-use-it-">When to use it?</h2>
+<p>I would recommend using TWGL for all jobs that require total WebGL control, especially if you already know WebGL/ES2 and just want to get rid of the verbosity.
+This would most likely apply to small (shader) experiments or you are using WebGL as a rasterizer to do non-3D things and shader experiments.
+For example I&#39;m using TWGL for my retro-gl project, which can render in 8-bit color mode and has a fixed texture resolution of 256 * 256.  </p>
+<h1 id="three-js">THREE JS</h1>
+<h1 id="babylon-js">Babylon.js</h1>
 
         </div>
         <div class="col-md-3">
@@ -103,7 +123,7 @@
                 <div id="disqus_thread"></div>
 <script>
     var disqus_config = function () {
-        this.page.identifier = "17-04-page-gen";
+        this.page.identifier = "17-07-webgl";
     };
     
     (function() { 

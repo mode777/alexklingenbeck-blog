@@ -4,8 +4,10 @@
     def.title = "Which WebGL library to choose?";
     def.lead = "Different WebGL libraries offer very different levels of abstractions. Which one is right for you?";
     def.tags = ["webgl"];
+    /*
     def.isBlog = true;
     def.date = new Date(2017, 6, 8);
+    */
 #}}
 
 Over the last six months I've used several libraries with WebGL. I'm therefore in no way an expert on Opengl ES2, WebGL or any of the library presented here. However, I think I've used them enough to be able to give you a quick overview, which tool is suitable for which job.

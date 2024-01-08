@@ -1,6 +1,6 @@
 {{##
     def.$layout = "article";
-    def.disqusId = "17-06-typescript";
+    def.disqusId = "17-06-docfx";
     def.title = "Use DocFx to document your existing .Net application";
     def.lead = "DocFx can build static html documentation pages from your .Net aplication.";
     def.tags = [".net"];

@@ -27,7 +27,7 @@
                         
                             <a class="nav-item nav-link " href="/index.html">Home</a>
                         
-                            <a class="nav-item nav-link active" href="/articles/17-06-docfx.html">Blog</a>
+                            <a class="nav-item nav-link active" href="/23-01-async.html">Blog</a>
                         
                             <a class="nav-item nav-link " href="/about.html">About</a>
                         
@@ -110,8 +110,8 @@ As most of the convenience functions are coupled to the dev-server. Apart from h
 <h2 id="step-1-building-the-asp-net-core-app">Step 1: Building the ASP.NET Core App</h2>
 <p>First of we will create a minimal ASP.NET Core WebApi application as a base. Create a new directory for your project, open a shell in it and run <code>dotnet new webapi</code>.</p>
 <p>Next, lets add the needed packages. In the same shell run:</p>
-<pre><code>&gt; dotnet add package Microsoft<span class="hljs-selector-class">.AspNetCore</span><span class="hljs-selector-class">.StaticFiles</span>
-&gt; dotnet add package Microsoft<span class="hljs-selector-class">.AspNetCore</span><span class="hljs-selector-class">.SpaServices</span>
+<pre><code>&gt; dotnet add <span class="hljs-keyword">package</span> <span class="hljs-title">Microsoft.AspNetCore.StaticFiles</span>
+&gt; dotnet add <span class="hljs-keyword">package</span> <span class="hljs-title">Microsoft.AspNetCore.SpaServices</span>
 </code></pre><p>Next you can run <code>dotnet restore</code> to download and install the referenced packages and <code>dotnet run</code> to test your app.</p>
 <p>If you head to <code>http://localhost:5000/api/values</code> you should see some sample JSON-Data, if the application is running correctly.</p>
 <h2 id="step-2-creating-the-angular-app">Step 2: Creating the Angular App</h2>
@@ -146,6 +146,7 @@ As most of the convenience functions are coupled to the dev-server. Apart from h
   ],
   ...
 }
+
 </code></pre>
 <p>In <code>karma.conf.js</code> we just adjust some paths:</p>
 <pre><code class="lang-js"><span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">config</span>) </span>{
@@ -162,13 +163,14 @@ As most of the convenience functions are coupled to the dev-server. Apart from h
 };
 </code></pre>
 <p>In <code>protractor.conf.js</code> we need to change the port of the application. In ASP.NET Core, the default is 5000.</p>
-<pre><code>...
+<pre><code><span class="hljs-string">...</span>
 
 exports.config = {
-  ...
-  baseUrl: <span class="hljs-string">'http://localhost:5000/'</span>,
-  ...
+  <span class="hljs-string">...</span>
+  baseUrl: 'http:<span class="hljs-string">//localhost</span><span class="hljs-function">:5000</span>/',
+  <span class="hljs-string">...</span>
 };
+
 </code></pre><p><code>webpack.config.js</code> can be a bit overwhelming. Make sure to make a backup first. Here we&#39;re mainly adjusting paths again. We also tell the HtmlWebpackPlugin (This plugin will automatically reference your Webpack chunks in your index-HTML-file) to use <code>./Views/Shared/_WebpackTemplate.cshtml</code> as a template for the <code>Index.cshtml</code> that will serve as our single page application - more on that later. We&#39;re also telling Webpack to output it&#39;s chunks to <code>wwwroot/dist</code> where ASP.NET Core will serve it&#39;s static files from.</p>
 <pre><code class="lang-js"><span class="hljs-built_in">module</span>.exports = {
   ...
@@ -254,14 +256,14 @@ platformBrowserDynamic().bootstrapModule(AppModule);
 <p>Add the following files to you project: First up is a super simple MVC-Controller that should serve our index.html from every route: <code>./Controllers/Home.cs</code>:</p>
 <pre><code class="lang-csharp"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">HomeController</span> : <span class="hljs-title">Controller</span>
 {
-    <span class="hljs-function"><span class="hljs-keyword">public</span> IActionResult <span class="hljs-title">Index</span>(<span class="hljs-params"></span>)
-    </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> IActionResult <span class="hljs-title">Index</span>(<span class="hljs-params"></span>)</span>
+    {
         <span class="hljs-keyword">return</span> View();
     }
 }
 </code></pre>
 <p>Create an empty <code>./Views/Home</code> folder. And the file <code>./Views/Shared/_WebpackTemplate.cshtml</code> which is just a simple HTML template:</p>
-<pre><code class="lang-html"><span class="hljs-meta">&lt;!doctype html&gt;</span>
+<pre><code class="lang-html"><span class="hljs-meta">&lt;!doctype <span class="hljs-meta-keyword">html</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>&gt;</span>
@@ -286,8 +288,8 @@ platformBrowserDynamic().bootstrapModule(AppModule);
 {
     <span class="hljs-keyword">private</span> <span class="hljs-keyword">readonly</span> IHostingEnvironment _hostingEnvironment;
 
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Startup</span>(<span class="hljs-params">IHostingEnvironment env</span>)
-    </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">Startup</span>(<span class="hljs-params">IHostingEnvironment env</span>)</span>
+    {
         _hostingEnvironment = env;
 
         <span class="hljs-keyword">var</span> builder = <span class="hljs-keyword">new</span> ConfigurationBuilder()
@@ -301,15 +303,15 @@ platformBrowserDynamic().bootstrapModule(AppModule);
     <span class="hljs-keyword">public</span> IConfigurationRoot Configuration { <span class="hljs-keyword">get</span>; }
 
     <span class="hljs-comment">// This method gets called by the runtime. Use this method to add services to the container.</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ConfigureServices</span>(<span class="hljs-params">IServiceCollection services</span>)
-    </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ConfigureServices</span>(<span class="hljs-params">IServiceCollection services</span>)</span>
+    {
         <span class="hljs-comment">// Add framework services.</span>
         services.AddMvc();
     }
 
     <span class="hljs-comment">// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.</span>
-    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Configure</span>(<span class="hljs-params">IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory</span>)
-    </span>{
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Configure</span>(<span class="hljs-params">IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory</span>)</span>
+    {
         <span class="hljs-comment">// only enable webpack building in Developement environment</span>
         <span class="hljs-keyword">if</span> (env.IsDevelopment())
         {
@@ -338,7 +340,7 @@ platformBrowserDynamic().bootstrapModule(AppModule);
     }
 }
 </code></pre>
-<p>The important changes take place in the <em>Configure</em> Method. First we enable the Webpack dev-server with Hot-Module-Replacement, then we enable serving static files and lastly we configure a speacial Route, that will always serve our Home/Index view when an unknown route is found - enabling push-API-style routing without the need for the <em>#</em>-character. </p>
+<p>The important changes take place in the <em>Configure</em> Method. First we enable the Webpack dev-server with Hot-Module-Replacement, then we enable serving static files and lastly we configure a speacial Route, that will always serve our Home/Index view when an unknown route is found - enabling push-API-style routing without the need for the _#_-character. </p>
 <div class="alert alert-danger" role="alert">
 If you are using Visual Studio, make sure you disable automatic Typescript compilation. Otherwise you might end up compiling your project twice into different folders. 
 </div>
@@ -346,15 +348,15 @@ If you are using Visual Studio, make sure you disable automatic Typescript compi
 <h2 id="step-6-run-the-app">Step 6: Run the app</h2>
 <p>No we can start our App to see if everything is working correctly. However, for the dev-server to work, we need to run the app in Developement-Mode (that&#39;s how we just configured it in <code>Startup.cs</code>). Most IDEs will set this environment-variable for you automatically. In the shell you need to do this:
 On Windows...</p>
-<pre><code><span class="hljs-meta">&gt;</span><span class="bash"> <span class="hljs-built_in">set</span> ASPNETCORE_ENVIRONMENT=Development</span>
+<pre><code>&gt; <span class="hljs-builtin-name">set</span> <span class="hljs-attribute">ASPNETCORE_ENVIRONMENT</span>=Development
 </code></pre><p>..or in an *nix environment:</p>
-<pre><code><span class="hljs-meta">&gt;</span><span class="bash"> <span class="hljs-built_in">export</span> ASPNETCORE_ENVIRONMENT=Development</span>
+<pre><code>&gt; <span class="hljs-builtin-name">export</span> <span class="hljs-attribute">ASPNETCORE_ENVIRONMENT</span>=Development
 </code></pre><p>Then you can run the app in the same shell like this:</p>
-<pre><code><span class="hljs-meta">&gt;</span><span class="bash"> dotnet build</span>
-<span class="hljs-meta">&gt;</span><span class="bash"> dotnet run</span>
+<pre><code><span class="hljs-quote">&gt; dotnet build</span>
+<span class="hljs-quote">&gt; dotnet run</span>
 </code></pre><p>The cold boot might take several seconds for the Webpack build to complete. After it, you should see a message like this:</p>
-<pre><code><span class="hljs-meta">&gt;</span><span class="bash"> info: Microsoft.AspNetCore.NodeServices[0]</span>
-<span class="hljs-meta">&gt;</span><span class="bash">       Webpack built 3619b488fb8a701fdd0b <span class="hljs-keyword">in</span> 11733ms</span>
+<pre><code>&gt; info: Microsoft.AspNetCore.NodeServices[<span class="hljs-number">0</span>]
+&gt;       Webpack built <span class="hljs-number">3619</span>b488fb8a701fdd0b <span class="hljs-keyword">in</span> <span class="hljs-number">11733</span>ms
 </code></pre><p>Got to <code>http://localhost:5000</code> and you should see the message &quot;app works!&quot; from the Angular CLI template. </p>
 <h3 id="some-things-to-try">Some things to try</h3>
 <p>Almost all features of Angular CLI should still work. For example you could...</p>
@@ -369,6 +371,8 @@ On Windows...</p>
 
             <h6 class="text-uppercase">recent articles</h6>
             
+            <div><a href="/23-01-async.html">Angular async pipe pitfalls</a></div>
+            
             <div><a href="/articles/17-06-docfx.html">Use DocFx to document your existing .Net application</a></div>
             
             <div><a href="/articles/17-05-angular-asp-net-core.html">Using Angular CLI with ASP.NET Core</a></div>
@@ -376,8 +380,6 @@ On Windows...</p>
             <div><a href="/articles/17-05-nuget.html">How to quickly turn your csproj into a NuGet package</a></div>
             
             <div><a href="/articles/17-05-cli-nodejs.html">Building Command-Line-Interfaces with Node.js</a></div>
-            
-            <div><a href="/articles/17-05-blog.html">All good things come in threes</a></div>
             
             <div><a href="/archive.html"><b>Archive</b></a></div>
             
@@ -415,7 +417,7 @@ On Windows...</p>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
                 <hr>
                 
-                <div style="text-align:right;"><a href="/impress.html">Impressum</a> - Copyright (c) 2017 Alexander Klingenbeck - made with <a href="https://github.com/mode777/page-gen">page-gen</a></div>       
+                <div style="text-align:right;"><a href="/impress.html">Impressum</a> - Copyright (c) 2024 Alexander Klingenbeck - made with <a href="https://github.com/mode777/page-gen">page-gen</a></div>       
             </div>
         </footer>
 

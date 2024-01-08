@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "page-gen page",
+    "watch": "page-gen page --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

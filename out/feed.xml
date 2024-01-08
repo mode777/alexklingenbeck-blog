@@ -7,6 +7,14 @@
 		<atom:link href="http://www.alexklingenbeck.de/feed.xml" rel="self" type="application/rss+xml" />
 			
             <item>
+				<title>Angular async pipe pitfalls</title>
+				<description>The async pipe is one of my favourite features in Angular, but I recently came across some pitfalls with change detection, which I wanted to share...</description>
+				<pubDate> 2023-02-07T23:00:00.000Z </pubDate>
+				<link>http://www.alexklingenbeck.de/23-01-async.html</link>
+				<guid isPermaLink="true">http://www.alexklingenbeck.de//23-01-async.html</guid>
+			</item>		
+            
+            <item>
 				<title>Using Angular CLI with ASP.NET Core</title>
 				<description>It is possible to integrate the convenience of Angular CLI into a ASP.NET Core application - find out how!</description>
 				<pubDate> 2017-05-27T22:00:00.000Z </pubDate>

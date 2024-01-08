@@ -27,7 +27,7 @@
                         
                             <a class="nav-item nav-link " href="/index.html">Home</a>
                         
-                            <a class="nav-item nav-link active" href="/articles/17-06-docfx.html">Blog</a>
+                            <a class="nav-item nav-link active" href="/23-01-async.html">Blog</a>
                         
                             <a class="nav-item nav-link " href="/about.html">About</a>
                         
@@ -70,7 +70,7 @@
 <p>Building a CLI should be an easy task in every programming language. However I always found it cumbersome to distribute them - especially under windows. With npm distribution, installation and usage just boils down to</p>
 <pre><code>npm publish
 npm <span class="hljs-keyword">install</span> -g your-app 
-your-app --<span class="hljs-keyword">option</span>
+your-app --<span class="hljs-keyword">option</span> 
 </code></pre><p>To follow along this tutorial, you should have <a href="https://nodejs.org/en/">Node.js</a> installed - obviously.</p>
 <h1 id="creating-a-package">Creating a package</h1>
 <p>Create a new folder for your app. Open the command line and create a new node package with <code>npm init</code>. After filling out some info about your package, there will be a file created called <strong>package.json</strong>, which will look similar to this:</p>
@@ -125,18 +125,18 @@ your-app --<span class="hljs-keyword">option</span>
 <p>The first line tells the environment, that this is a script to be executed with Node.js. You will typically find this in POSIX environments but here it seems to be necessary on Windows as well. Then we load commander and let it parse our command line arguments. The fluent API is probably pretty self explanatory, I suggest you have a look at the <a href="https://github.com/tj/commander.js/">commander documentation</a> for more info. Now you test the app:</p>
 <pre><code><span class="hljs-keyword">node</span> <span class="hljs-title">index</span>.js MyArgument --myoption OptionalArg
 </code></pre><p>Which should yield this output:</p>
-<pre><code><span class="hljs-meta">&gt;</span><span class="bash">Argument:  MyArgument</span>
-<span class="hljs-meta">&gt;</span><span class="bash">Optional value: OptionalArg</span>
+<pre><code>&gt;Argument:  MyArgument
+&gt;<span class="hljs-keyword">Optional</span> <span class="hljs-keyword">value</span>: OptionalArg
 </code></pre><p>In this example the <code>.option(...)</code> part is the only thing you would really need for your program to work. All the others will contribute to the help page. When you run the app with:</p>
 <pre><code><span class="hljs-keyword">node</span> <span class="hljs-title">index</span>.js --help
 </code></pre><p>You will get a nice little usage information:</p>
 <pre><code><span class="hljs-meta">&gt;</span><span class="bash">  Usage: my-cli-app [options] [myargument]</span>
-<span class="hljs-meta">&gt;</span><span class="bash"></span>
+<span class="hljs-meta">&gt;</span>
 <span class="hljs-meta">&gt;</span><span class="bash">  Put your description here</span>
-<span class="hljs-meta">&gt;</span><span class="bash"></span>
+<span class="hljs-meta">&gt;</span>
 <span class="hljs-meta">&gt;</span><span class="bash">  Options:</span>
-<span class="hljs-meta">&gt;</span><span class="bash"></span>
-<span class="hljs-meta">&gt;</span><span class="bash">    -h, --help              output usage information</span>
+<span class="hljs-meta">&gt;</span>
+<span class="hljs-meta">&gt;</span><span class="bash">    -h, --<span class="hljs-built_in">help</span>              output usage information</span>
 <span class="hljs-meta">&gt;</span><span class="bash">    -m, --myoption &lt;value&gt;  some optional value</span>
 <span class="hljs-meta">&gt;</span><span class="bash">    -V, --version           output the version number</span>
 </code></pre><div class="alert alert-danger" role="alert">
@@ -156,7 +156,7 @@ Now to publish you app, simply type:</p>
 </code></pre><p>If you want to update your app, just change the version number in your package.json and run <code>npm publish</code> again.</p>
 <p>Now you can easily install the app from any computer you like by typing:</p>
 <pre><code>npm install -<span class="hljs-keyword">g</span> my-<span class="hljs-keyword">cli</span>-<span class="hljs-keyword">app</span>
-</code></pre><p>The <em>-g</em> parameter tells npm to do a global install. CLI apps should always be globally installed, so you can access them from every directory you like. After installation you can test your app with:</p>
+</code></pre><p>The _-g_ parameter tells npm to do a global install. CLI apps should always be globally installed, so you can access them from every directory you like. After installation you can test your app with:</p>
 <pre><code>my-<span class="hljs-keyword">cli</span>-<span class="hljs-keyword">app</span> --<span class="hljs-keyword">help</span>
 </code></pre><h2 id="summary">Summary</h2>
 <p>As you can see, Node.js, NPM and Commander.js make it incredibly easy to create and distribute cross-platform CLI tools. I think this will contribute to the trend of CLI tools in developement, like we have seen with yeoman, tsc or angular-cli. </p>
@@ -166,6 +166,8 @@ Now to publish you app, simply type:</p>
 
             <h6 class="text-uppercase">recent articles</h6>
             
+            <div><a href="/23-01-async.html">Angular async pipe pitfalls</a></div>
+            
             <div><a href="/articles/17-06-docfx.html">Use DocFx to document your existing .Net application</a></div>
             
             <div><a href="/articles/17-05-angular-asp-net-core.html">Using Angular CLI with ASP.NET Core</a></div>
@@ -173,8 +175,6 @@ Now to publish you app, simply type:</p>
             <div><a href="/articles/17-05-nuget.html">How to quickly turn your csproj into a NuGet package</a></div>
             
             <div><a href="/articles/17-05-cli-nodejs.html">Building Command-Line-Interfaces with Node.js</a></div>
-            
-            <div><a href="/articles/17-05-blog.html">All good things come in threes</a></div>
             
             <div><a href="/archive.html"><b>Archive</b></a></div>
             
@@ -212,7 +212,7 @@ Now to publish you app, simply type:</p>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
                 <hr>
                 
-                <div style="text-align:right;"><a href="/impress.html">Impressum</a> - Copyright (c) 2017 Alexander Klingenbeck - made with <a href="https://github.com/mode777/page-gen">page-gen</a></div>       
+                <div style="text-align:right;"><a href="/impress.html">Impressum</a> - Copyright (c) 2024 Alexander Klingenbeck - made with <a href="https://github.com/mode777/page-gen">page-gen</a></div>       
             </div>
         </footer>
 
